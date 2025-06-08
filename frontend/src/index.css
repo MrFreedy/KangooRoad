@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+:root {
+  --color-primary: #ff6f00;
+  --color-primary-hover: #d54d00;
+
+  --color-secondary: #fec106;
+  --color-secondary-hover: #cb9600;
+
+  --color-bar: #1f1f1f;
+
+  --color-cobalt: #2f4fff;
+  --color-cobalt-hover: #253ecc;
+
+  --color-plum: #7c3aed;
+  --color-plum-hover: #6529cc;
+
+  --color-slate: #111827;
+  --color-slate-hover: #0b1120;
+
+  --color-sand: #fef9ef;
+  --color-sand-hover: #f3eee4;
+
+  --color-teal: #14b8a6;
+  --color-teal-hover: #0d9488;
+
+  --color-pink: #ec4899;
+  --color-pink-hover: #db2777;
+
+  --color-lime: #a3e635;
+  --color-lime-hover: #84cc16;
+
+  --color-sky: #0ea5e9;
+  --color-sky-hover: #0284c7;
+
+  --color-amber: #f59e0b;
+  --color-amber-hover: #d97706;
+
+  --color-grape: #8e44ad;
+  --color-grape-hover: #6c2b8d;
+
+  --color-coal: #232323;
+  --color-coal-hover: #1a1a1a;
+
+  --color-cloud: #f3f4f6;
+  --color-cloud-hover: #e5e7eb;
+
+  --color-red: #ef4444;
+  --color-red-hover: #dc2626;
+
+  --color-green: #22c55e;
+  --color-green-hover: #16a34a;
+}
+
+body{
+    background-color: #fef9ef;
+}

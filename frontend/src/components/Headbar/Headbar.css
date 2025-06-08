@@ -1,0 +1,61 @@
+@import url('../../index.css');
+
+a {
+    color: var(--color-secondary);
+}
+
+a:hover {
+    color: var(--color-secondary-hover);
+}
+
+.headbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  background-color: var(--color-bar);
+  padding: 40px 20px;
+  color: white;
+  height: 80px;
+}
+
+.headbar-left {
+  width: 0;
+}
+
+.headbar-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.headbar-right {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  height: 50px !important;
+  width: auto !important;
+  display: block;
+  max-height: 100%;
+  overflow: hidden;
+}
+
+.admin-button {
+  background-color: var(--color-primary);
+  color: var(--color-bar);
+  border: none;
+  padding: 8px 14px;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background-color 0.2s ease;
+}
+
+.admin-button:hover {
+  background-color: var(--color-primary-hover);
+}

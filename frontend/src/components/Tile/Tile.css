@@ -1,0 +1,40 @@
+@import url('../../index.css');
+
+.tile {
+  background-color: var(--tile-bg, #2d89ff);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 24px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  width: 100%;
+  width: 320px;
+  text-align: center;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.tile:hover {
+  background-color: var(--tile-bg-hover, #1a60d1);
+  transform: scale(1.02);
+}
+
+.tile-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tile-icon svg {
+  font-size: 48px;
+  width: 40px;
+  height: 40px;
+}
+
+
