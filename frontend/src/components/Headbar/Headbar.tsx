@@ -23,21 +23,20 @@ const Headbar: React.FC<HeadbarProps> = ({ currentStep, totalSteps, isAdminButto
       <div className="headbar-left"></div>
       <div className="headbar-center">
         <img src={Logo} alt="Logo" className="logo" />
-      </div>
-
-      {isFormPage && currentStep !== undefined && totalSteps !== undefined && (
-        <div className="w-full max-w-md mx-auto bg-gray-300 rounded h-6 relative">
-          <div
-            id="progressBar"
-            className="bg-green-500 h-6 rounded flex items-center justify-center text-white font-bold text-sm"
-            style={{ width: `${progressPercent}%` }}
-          >
-            <span className="absolute inset-0 flex items-center justify-center text-gray-800 font-bold text-sm">
-              Étape {currentStep} sur {totalSteps}
-            </span>
-          </div>
-        </div>
-      )}
+          {isFormPage && currentStep !== undefined && totalSteps !== undefined && (
+            <div className="w-full max-w-md mx-auto bg-gray-300 rounded h-6 relative">
+              <div
+                id="progressBar"
+                className="bg-green-500 h-6 rounded flex items-center justify-center text-white font-bold text-sm"
+                style={{ width: `${progressPercent}%` }}
+              >
+                <span className="absolute inset-0 flex items-center justify-center text-gray-800 font-bold text-sm">
+                  Étape {currentStep} sur {totalSteps}
+                </span>
+              </div>
+            </div>
+          )}
+      </div>      
 
       {isAdminButtonVisible && (
         <div className="headbar-right">
