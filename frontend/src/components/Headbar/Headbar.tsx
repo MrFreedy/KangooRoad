@@ -13,7 +13,8 @@ interface HeadbarProps {
 const Headbar: React.FC<HeadbarProps> = ({ currentStep, totalSteps, isAdminButtonVisible = true }) => {
   const location = useLocation();
   const isFormPage = location.pathname === '/form';
-
+  isAdminButtonVisible = location.pathname === '/';
+  
   const progressPercent =
     currentStep && totalSteps ? Math.round((currentStep / totalSteps) * 100) : 0;
 
