@@ -3,7 +3,7 @@ name: Deploy KangooRoad
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
 
@@ -19,7 +19,7 @@ jobs:
           script: |
             cd /home/KangooRoad/
             git fetch origin
-            git reset --hard origin/main
+            git reset --hard origin/master
 
   setup_environment:
     runs-on: ubuntu-latest
