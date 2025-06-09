@@ -9,8 +9,8 @@
   width: 100%;
   background-color: #1f1f1f;
   color: white;
-  height: 60px; /* OK */
-  padding: 0 20px; /* ✅ Enlève le padding vertical incohérent */
+  height: 60px;
+  padding: 0 20px;
   z-index: 1000;
 }
 
