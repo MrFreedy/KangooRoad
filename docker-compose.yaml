@@ -1,8 +1,20 @@
 version: "3.8"
 
 services:
+  web:
+    container_name: kangooroad-web
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "5173:5173"
+    depends_on:
+      - api
+    networks:
+      - kangooroad-network
   api:
-    container_name: trav3il-api
+    container_name: kangooroad-api
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -12,9 +24,9 @@ services:
     depends_on:
       - db
     networks:
-      - trav3il-network
+      - kangooroad-network
   db:
-    container_name: trav3il-db
+    container_name: kangooroad-db
     image: postgres
     restart: always
     ports:
@@ -26,13 +38,11 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
-    labels:
-      com.datadoghq.ad.logs: '[{"source": "postgresql", "service": "trav3il-db"}]'
     networks:
-      - trav3il-network
+      - kangooroad-network
 volumes:
   postgres_data:
 
 networks:
-  trav3il-network:
+  kangooroad-network:
     external: true
