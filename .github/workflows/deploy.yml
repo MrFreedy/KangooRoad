@@ -36,6 +36,12 @@ jobs:
             echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> /home/KangooRoad/.env
             echo "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" >> /home/KangooRoad/.env
             echo "COOKIE_SECRET=${{ secrets.COOKIE_SECRET }}" >> /home/KangooRoad/backend/.env
+            echo "DB_HOST=${{ secrets.DB_HOST }}" >> /home/KangooRoad/backend/.env
+            echo "DB_PORT=${{ secrets.DB_PORT }}" >> /home/KangooRoad/backend/.env
+            echo "DB_USER=${{ secrets.DB_USER }}" >> /home/KangooRoad/backend/.env
+            echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> /home/KangooRoad/backend/.env
+            echo "DB_NAME=${{ secrets.DB_NAME }}" >> /home/KangooRoad/backend/.env
+
 
   deploy:
       runs-on: ubuntu-latest
