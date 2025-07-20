@@ -41,6 +41,7 @@ jobs:
             echo "DB_USER=${{ secrets.DB_USER }}" >> /home/KangooRoad/backend/.env
             echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> /home/KangooRoad/backend/.env
             echo "DB_NAME=${{ secrets.DB_NAME }}" >> /home/KangooRoad/backend/.env
+            echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" > /home/KangooRoad/frontend/.env
 
 
   deploy:
