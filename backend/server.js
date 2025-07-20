@@ -2,7 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const dotenv = require('dotenv');
-const questionRouter = require('./routes/questions');
+const questionRouter = require('./routes/questions');``
+const sectionsRouter = require('./routes/sections');
 const checkCookie = require('./middleware/checkCookie');
 
 const port = 3002;
@@ -13,13 +14,15 @@ const app = express();
 app.use(cors({
     origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
 }));
 
 app.use(express.json());
 app.use(cookieParser());
 
 app.use('/questions', questionRouter);
+app.use('/sections', sectionsRouter);
 
 app.get('/', checkCookie, (req, res) => {
     res.send('Welcome to the Kangooroad API!');

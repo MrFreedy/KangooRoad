@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { RiTimeLine } from '@remixicon/react';
 import { useProgress } from '../../context/ProgressContext';
 import QuestionField from '../../components/QuestionField/QuestionField';
+import API_BASE_URL from '../../config';
 
 interface Question {
   id: number;
@@ -23,27 +24,6 @@ interface Section {
   questions: Question[];
 }
 
-const sectionsData = [
-  { id: 1, name: "Informations Personnelles 👤", order: 1, is_active: false },
-  { id: 6, name: "Culture et Coutumes Locales 🗺️", order: 6, is_active: true },
-  { id: 5, name: "Vie Sociale et Intégration 👥", order: 5, is_active: true },
-  { id: 9, name: "Évaluation Générale et Suggestions 💯", order: 9, is_active: true },
-  { id: 2, name: "Informations sur la mobilité 🗺️", order: 2, is_active: true },
-  { id: 7, name: "Logement 🏠", order: 7, is_active: true },
-  { id: 8, name: "Coût de la Vie 💶", order: 8, is_active: true },
-  { id: 4, name: "Aspects Académiques 🏫", order: 4, is_active: true }
-];
-
-const questionsData: Question[] = [
-  { id: 1, sectionId: 1, type: 'text', content: 'Nom', options: null, order: 1, is_mandatory: true, is_details: false },
-  { id: 2, sectionId: 1, type: 'text', content: 'Prénom', options: null, order: 2, is_mandatory: true, is_details: false },
-  { id: 3, sectionId: 1, type: 'email', content: 'Email', options: null, order: 3, is_mandatory: false, is_details: false },
-  { id: 4, sectionId: 1, type: 'checkbox', content: "En cochant cette case, j'accepte d'être contacté(e) par des étudiants pour partager des informations et des retours d'expérience.", options: [], order: 4, is_mandatory: false, is_details: false },
-  { id: 5, sectionId: 1, type: 'select', content: 'Quel était votre âge au moment de la mobilité ?', options: ['18','19','20','21','22','23','24','25','26','27','28','29','30'], order: 5, is_mandatory: true, is_details: false },
-  { id: 6, sectionId: 1, type: 'select', content: 'Campus 3iL', options: ['Rodez','Limoges','Nantes'], order: 6, is_mandatory: true, is_details: false },
-  { id: 7, sectionId: 1, type: 'select', content: 'Quel était votre statut étudiant ?', options: ['Alternant', 'Etudiant (cycle initial)'], order: 7, is_mandatory: true, is_details: false },
-];
-
 function Form() {
   const [step, setStep] = useState(0);
   const [sections, setSections] = useState<Section[]>([]);
@@ -53,12 +33,40 @@ function Form() {
   const { setCurrentStep, setTotalSteps } = useProgress();
 
   useEffect(() => {
-    const enrichedSections = sectionsData.map(section => ({
-      ...section,
-      questions: questionsData.filter(q => q.sectionId === section.id)
-    }));
-    setSections(enrichedSections);
+    const fetchSectionsAndQuestions = async () => {
+      try {
+
+        const [sectionsRes, questionsRes] = await Promise.all([
+          fetch(`${API_BASE_URL}sections`, { credentials: 'include' }),
+          fetch(`${API_BASE_URL}questions`, { credentials: 'include' })
+        ]);
+
+        const sectionsJson: Omit<Section, 'questions'>[] = await sectionsRes.json();
+        const questionsJsonRaw = await questionsRes.json();
+
+        const questionsJson: Question[] = questionsJsonRaw.map((q: any) => ({
+          ...q,
+          sectionId: q.section_id
+        }));
+
+        questionsJson.sort((a, b) => a.order - b.order);
+
+        const enrichedSections: Section[] = sectionsJson.map(section => ({
+          ...section,
+          questions: questionsJson.filter(q => q.sectionId === section.id)
+        }));
+
+        enrichedSections.sort((a, b) => a.order - b.order);
+
+        setSections(enrichedSections);
+      } catch (error) {
+        console.error('Erreur lors du chargement des sections/questions:', error);
+      }
+    };
+
+    fetchSectionsAndQuestions();
   }, []);
+
 
   useEffect(() => {
     if (sections.length > 0) {
@@ -106,7 +114,7 @@ function Form() {
         </div>
       ) : (
         <div>
-          <h2 className="text-3xl font-semibold mb-4">
+          <h2 className="text-3xl font-semibold mb-4 text-center">
             Étape {step} : {sections[step - 1]?.name}
           </h2>
           {sections[step - 1]?.questions.map(question => (

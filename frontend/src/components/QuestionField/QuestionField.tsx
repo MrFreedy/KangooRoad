@@ -1,5 +1,5 @@
 import React from 'react'
-
+import './QuestionField.css'
 interface QuestionProps {
   question: {
     id: number;
