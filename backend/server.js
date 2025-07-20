@@ -12,7 +12,7 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-    origin: '*',
+    origin: 'http://168.231.87.179:5173',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
