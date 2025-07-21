@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const dotenv = require('dotenv');
-const questionRouter = require('./routes/questions');``
+const questionRouter = require('./routes/questions');
 const sectionsRouter = require('./routes/sections');
 const checkCookie = require('./middleware/checkCookie');
 
@@ -12,10 +12,9 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-    origin: 'http://168.231.87.179:5173',
+    origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 app.use(express.json());

@@ -37,8 +37,8 @@ function Form() {
       try {
 
         const [sectionsRes, questionsRes] = await Promise.all([
-          fetch(`${API_BASE_URL}sections`, { credentials: 'include' }),
-          fetch(`${API_BASE_URL}questions`, { credentials: 'include' })
+          fetch(`${API_BASE_URL}sections`),
+          fetch(`${API_BASE_URL}questions`)
         ]);
 
         const sectionsJson: Omit<Section, 'questions'>[] = await sectionsRes.json();
