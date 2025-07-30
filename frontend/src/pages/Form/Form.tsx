@@ -1,9 +1,9 @@
 import './Form.css';
 import { useEffect, useState } from 'react';
 import { RiTimeLine } from '@remixicon/react';
-import { useProgress } from '../../context/ProgressContext';
-import QuestionField from '../../components/QuestionField/QuestionField';
-import API_BASE_URL from '../../config';
+import { useProgress } from '@context/ProgressContext';
+import QuestionField from '@components/QuestionField/QuestionField';
+import API_BASE_URL from '@src/config';
 
 interface Question {
   id: number;
@@ -117,25 +117,25 @@ function Form() {
           <h2 className="text-3xl font-semibold mb-4 text-center">
             Étape {step} : {sections[step - 1]?.name}
           </h2>
-          {sections[step - 1]?.questions.map(question => (
-            <QuestionField
+          <div className="flex flex-col items-center">
+            {sections[step - 1]?.questions.map(question => (
+              <QuestionField
               key={question.id}
               question={question}
               value={answers[question.id]}
               onChange={(id, value) => setAnswers(prev => ({ ...prev, [id]: value }))}
               onValidate={checkMandatoryFields}
-            />
-          ))}
-          <div className="flex justify-between mt-6">
+              />
+            ))}
             <button onClick={handlePrev} className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded">Précédent</button>
-            <button
-              id="next-btn"
-              onClick={handleNext}
-              disabled={!isNextEnabled}
-              className={`px-4 py-2 rounded text-white transition 
-                ${isNextEnabled ? 'bg-blue-500 hover:bg-blue-600' : 'bg-gray-400 cursor-not-allowed'}`}
-            >
-              Suivant
+              <button
+                id="next-btn"
+                onClick={handleNext}
+                disabled={!isNextEnabled}
+                className={`px-4 py-2 rounded text-white transition 
+                  ${isNextEnabled ? 'bg-blue-500 hover:bg-blue-600' : 'bg-gray-400 cursor-not-allowed'}`}
+              >
+                Suivant
             </button>
           </div>
         </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import './Headbar.css';
-import Logo from '../../assets/logo.svg';
+import Logo from '@assets/logo.svg';
 import { RiVipCrownLine } from '@remixicon/react';
 import { useLocation } from 'react-router-dom';
 
