@@ -4,6 +4,7 @@ import { RiTimeLine } from '@remixicon/react';
 import { useProgress } from '@context/ProgressContext';
 import QuestionField from '@components/QuestionField/QuestionField';
 import API_BASE_URL from '@src/config';
+import { useNavigate } from 'react-router-dom';
 
 interface Question {
   id: number;
@@ -25,6 +26,8 @@ interface Section {
 }
 
 function Form() {
+  const navigate = useNavigate();
+
   const [step, setStep] = useState(0);
   const [sections, setSections] = useState<Section[]>([]);
   const [answers, setAnswers] = useState<Record<number, any>>({});
@@ -82,7 +85,8 @@ function Form() {
   };
 
   const handlePrev = () => {
-    if (step > 0) setStep(step - 1);
+    if (step > 0 && step != 1) setStep(step - 1);
+    if (step == 1) navigate('/');
   };
 
   function checkMandatoryFields() {
@@ -127,16 +131,25 @@ function Form() {
               onValidate={checkMandatoryFields}
               />
             ))}
-            <button onClick={handlePrev} className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded">Précédent</button>
+            <div className="flex justify-between w-150">
+              <button
+                onClick={handlePrev}
+                className={`self-start text-white px-4 py-2 rounded
+                  ${step == 1 ? 'bg-red-500 hover:bg-red-600':'bg-gray-500 hover:bg-gray-600'}`}
+              >
+                {step > 1 ? "Précédent" : "Quitter"}
+              </button>
               <button
                 id="next-btn"
                 onClick={handleNext}
                 disabled={!isNextEnabled}
-                className={`px-4 py-2 rounded text-white transition 
+                className={`self-end px-4 py-2 rounded text-white transition 
                   ${isNextEnabled ? 'bg-blue-500 hover:bg-blue-600' : 'bg-gray-400 cursor-not-allowed'}`}
               >
                 Suivant
-            </button>
+              </button>
+            </div>
+            
           </div>
         </div>
       )}
