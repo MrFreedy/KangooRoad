@@ -59,8 +59,7 @@ const QuestionField: React.FC<QuestionProps> = ({ question, value, onChange, onV
             onChange={(e) => onChange(question.id, e.currentTarget.checked)}
             onInput={onValidate}
           />
-          <label>{question.content}</label>
-          {question.is_mandatory && <span className="text-red-600 ml-1"><strong>*</strong></span>}
+          <label>{question.content} {question.is_mandatory && <span className="text-red-600 ml-1"><strong>*</strong></span>}</label>
         </div>
       )}
 
