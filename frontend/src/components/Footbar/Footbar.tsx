@@ -4,7 +4,7 @@ import './Footbar.css';
 const Footbar: React.FC = () => {
   return (
     <footer className="footbar">
-      <div className="footbar-links">
+      <div className="flex flex-col-reverse sm:flex-row text-center footbar-links">
         <a href="/policy" className="hover:underline mx-2 text-sky-500 underline">
           Politique de confidentialité
         </a>
