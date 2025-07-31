@@ -9,12 +9,13 @@ interface QuestionProps {
     options?: any;
     is_details?: boolean;
   };
-  value: any;
+  value: { main?: any; details?: any };
   onChange: (id: number, value: any) => void;
+  onChangeDetails?: (id: number, value: any) => void;
   onValidate: () => void;
 }
 
-const QuestionField: React.FC<QuestionProps> = ({ question, value, onChange, onValidate }) => {
+const QuestionField: React.FC<QuestionProps> = ({ question, value, onChange, onChangeDetails, onValidate }) => {
   return (
     <div className="mb-4 w-150">
       {question.type !== 'checkbox' && (
@@ -24,26 +25,43 @@ const QuestionField: React.FC<QuestionProps> = ({ question, value, onChange, onV
         </label>
       )}
 
-      {question.type === 'text' && (
-        <input type="text" required={question.is_mandatory} className="mt-1 block w-full border px-3 py-2 rounded-md" value={value || ''} data-is-mandatory={question.is_mandatory ? 'true' : 'false'} onChange={(e) => onChange(question.id, e.currentTarget.value)} onInput={onValidate}/>
-      )}
-
-      {question.type === 'textarea' && (
-        <textarea required={question.is_mandatory} className="mt-1 block w-full border px-3 py-2 rounded-md" value={value || ''} data-is-mandatory={question.is_mandatory ? 'true' : 'false'} onChange={(e) => onChange(question.id, e.currentTarget.value)} onInput={onValidate}/>
-      )}
-
-      {question.type === 'email' && (
+      {(question.type === 'text' || question.type === 'email') && (
         <>
-          <input type="email" required={question.is_mandatory} className="mt-1 block w-full border px-3 py-2 rounded-md" value={value || ''} data-is-mandatory={question.is_mandatory ? 'true' : 'false'} onChange={(e) => onChange(question.id, e.currentTarget.value)} onInput={onValidate}/>
-          <span className="text-gray-600">Format attendu: nom@domaine.fr</span>
+          <input
+            type="text"
+            className="mt-1 block w-full border px-3 py-2 rounded-md"
+            value={value?.main || ''}
+            onChange={(e) => onChange(question.id, e.currentTarget.value)}
+          />
+          {question.type === 'email' && (
+            <span className="text-gray-600">Format attendu: nom@domaine.fr</span>
+          )}
         </>
       )}
 
+      {question.type === 'textarea' && (
+        <textarea className="mt-1 block w-full border px-3 py-2 rounded-md" value={value?.main || ''} onChange={(e) => onChange(question.id, e.currentTarget.value)}/>
+      )}
+
       {question.type === 'select' && (
-        <select id={question.id} required={question.is_mandatory} className="mt-1 block w-full border px-3 py-2 rounded-md" value={value } data-is-mandatory={question.is_mandatory ? 'true' : 'false'} onChange={(e) => onChange(question.id, e.currentTarget.value)} onInput={onValidate}>
-          {Array.isArray(question.options) && question.options.map((option: string, index: number) => (
-            <option key={index} value={option}>{option}</option>
-          ))}
+        <select
+          id={question.id}
+          
+          className="mt-1 block w-full border px-3 py-2 rounded-md"
+          value={value?.main !== undefined ? value.main : 'null'}
+          onChange={(e) => {
+            onChange(question.id, e.currentTarget.value);
+            setTimeout(() => onValidate(), 0); // ⚠️ nécessaire pour is_details dynamique
+          }}
+         
+        >
+          <option value="null" disabled>
+            {question.is_mandatory ? 'Sélectionnez une option' : 'Optionnel'}
+          </option>
+          {Array.isArray(question.options) &&
+            question.options.map((option: string, index: number) => (
+              <option key={index} value={option}>{option}</option>
+            ))}
         </select>
       )}
 
@@ -51,27 +69,26 @@ const QuestionField: React.FC<QuestionProps> = ({ question, value, onChange, onV
         <div className="flex items-center">
           <input
             type="checkbox"
-            required={question.is_mandatory}
+            
             className="mr-2"
-            checked={value || false}
-            data-is-mandatory={question.is_mandatory ? 'true' : 'false'}
+            checked={value?.main || false}
             onChange={(e) => onChange(question.id, e.currentTarget.checked)}
-            onInput={onValidate}
+           
           />
           <label>{question.content} {question.is_mandatory && <span className="text-red-600 ml-1"><strong>*</strong></span>}</label>
         </div>
       )}
 
       {question.type === 'date' && (
-        <input type="date" required={question.is_mandatory} className="mt-1 block w-full border px-3 py-2 rounded-md" value={value || ''} data-is-mandatory={question.is_mandatory ? 'true' : 'false'} onChange={(e) => onChange(question.id, e.currentTarget.value)} onInput={onValidate}/>
+        <input type="date" min="2000-01-01" max="2100-12-31" className="mt-1 block w-full border px-3 py-2 rounded-md" value={value?.main || ''} onChange={(e) => onChange(question.id, e.currentTarget.value)}/>
       )}
 
       {question.type === 'number' && (
-        <input type="number" required={question.is_mandatory} className="mt-1 block w-full border px-3 py-2 rounded-md" value={value || ''} data-is-mandatory={question.is_mandatory ? 'true' : 'false'} onChange={(e) => onChange(question.id, e.currentTarget.value)} onInput={onValidate}/>
+        <input type="number" className="mt-1 block w-full border px-3 py-2 rounded-md" value={value?.main || ''} onChange={(e) => onChange(question.id, e.currentTarget.value)}/>
       )}
 
       {question.type === 'file' && (
-        <input type="file" required={question.is_mandatory} multiple accept="image/*,video/*" className="mt-1 block w-full border px-3 py-2 rounded-md"/>
+        <input type="file" multiple accept="image/*,video/*" className="mt-1 block w-full border px-3 py-2 rounded-md"/>
       )}
 
       {question.type === 'rating' && question.options && (
@@ -82,8 +99,14 @@ const QuestionField: React.FC<QuestionProps> = ({ question, value, onChange, onV
         </div>
       )}
 
-      {question.is_details && (
-        <textarea placeholder="Détails..." className="mt-2 block w-full border px-3 py-2 rounded-md" value={value || ''} data-is-mandatory={question.is_mandatory ? 'true' : 'false'} onChange={(e) => onChange(question.id, e.currentTarget.value)} onInput={onValidate}></textarea>
+      {question.is_details && (value.main == 'Autre' || value.main == 'Oui') && (
+        <textarea
+          placeholder="Détails..."
+          className="mt-2 block w-full border px-3 py-2 rounded-md"
+          value={value?.details || ''}
+          onChange={(e) => onChangeDetails(question.id, e.currentTarget.value)}
+          onInput={onValidate}
+        />
       )}
     </div>
   )}

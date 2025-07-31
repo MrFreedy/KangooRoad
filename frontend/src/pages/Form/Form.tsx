@@ -77,6 +77,7 @@ function Form() {
       setTotalSteps(sections.length);
       setCurrentStep(step);
     }
+    //console.log(JSON.parse(localStorage.getItem("geo")));
   }, [sections, step]);
 
   const totalSteps = sections.length + 1;
@@ -85,25 +86,89 @@ function Form() {
     if (step < totalSteps - 1) {
       setStep(step + 1);
       setIsNextEnabled(false);
+      let json;
+      //localStorage.setItem("geo",JSON.stringify({'ville':'paris'}));
     }
   };
 
   const handlePrev = () => {
     if (step > 0 && step != 1){
       setStep(step - 1);
+      checkMandatoryFields();
     };
     if (step == 1) navigate('/');
   };
 
   function checkMandatoryFields() {
-    const requiredFields = document.querySelectorAll('[data-is-mandatory="true"]');
-    allValid = Array.from(requiredFields).every((el) => {
-      if (el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement || el instanceof HTMLSelectElement) {
-        if (el instanceof HTMLInputElement && el.type === 'checkbox') return el.checked;
-        return el.value.trim() !== '';
+    const currentQuestions = sections[step - 1]?.questions || [];
+    
+    const allValid = currentQuestions.every(question => {
+      const answer = answers[question.id] || {};
+      const val = answer.main;
+
+      if (!question.is_mandatory) return true;
+
+      if (question.type === 'checkbox') {
+        const isChecked = answer.main;
+        return isChecked !== undefined ? isChecked : false;
       }
-      return false;
+
+      if (question.type === 'date') {
+        const date = new Date(val);
+        return val && date >= new Date('2000-01-01');
+      }
+
+      if (!val || val === 'null' || String(val).trim() === '') {
+        return false;
+      }
+
+      if (question.is_details && (val === 'Oui' || val === 'Autre')) {
+        const details = answer.details;
+        if (!details || String(details).trim() === '') return false;
+      }
+
+      return true;
     });
+
+    setIsNextEnabled(allValid);
+  }
+
+  useEffect(() => {
+    if (step > 0) {
+      checkMandatoryFields();
+    }
+  }, [answers, step]);
+
+  function checkMandatoryFieldsWith(data: typeof answers) {
+    const currentQuestions = sections[step - 1]?.questions || [];
+
+    const allValid = currentQuestions.every(question => {
+      const answer = data[question.id] || {};
+      const val = answer.main;
+
+      if (!question.is_mandatory) return true;
+
+      if (question.type === 'checkbox') {
+        return answer.main !== undefined ? answer.main : false;
+      }
+
+      if (question.type === 'date') {
+        const date = new Date(val);
+        return val && date >= new Date('2000-01-01');
+      }
+
+      if (!val || val === 'null' || String(val).trim() === '') {
+        return false;
+      }
+
+      if (question.is_details && (val === 'Oui' || val === 'Autre')) {
+        const details = answer.details;
+        if (!details || String(details).trim() === '') return false;
+      }
+
+      return true;
+    });
+
     setIsNextEnabled(allValid);
   }
 
@@ -130,11 +195,29 @@ function Form() {
           <div className="flex flex-col items-center">
             {sections[step - 1]?.questions.map(question => (
               <QuestionField
-              key={question.id}
-              question={question}
-              value={answers[question.id]}
-              onChange={(id, value) => setAnswers(prev => ({ ...prev, [id]: value }))}
-              onValidate={checkMandatoryFields}
+                key={question.id}
+                question={question}
+                value={answers[question.id] || {}}
+                onChange={(id, value) => {
+                  setAnswers(prev => {
+                    const updated = {
+                      ...prev,
+                      [id]: { ...(prev[id] || {}), main: value }
+                    };
+                    setTimeout(() => checkMandatoryFieldsWith(updated), 0);
+                    return updated;
+                  });
+                }}
+                onChangeDetails={(id, value) => {
+                  setAnswers(prev => {
+                    const updated = {
+                      ...prev,
+                      [id]: { ...(prev[id] || {}), details: value }
+                    };
+                    return { ...updated };
+                  });
+                }}
+                onValidate={checkMandatoryFields}
               />
             ))}
             <div className="flex justify-between w-150">
