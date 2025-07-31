@@ -19,15 +19,16 @@ const Headbar: React.FC<HeadbarProps> = ({ currentStep, totalSteps, isAdminButto
     currentStep && totalSteps ? Math.round((currentStep / totalSteps) * 100) : 0;
 
   return (
-    <header className="headbar mb-6">
-      <div className="headbar-left"></div>
-      <div className="headbar-center">
-        <img src={Logo} alt="Logo" className="logo" />
-          {isFormPage && currentStep !== undefined && totalSteps !== undefined && (
-            <div className="w-full max-w-md mx-auto bg-gray-300 rounded h-6 relative">
+    <header className="headbar flex flex-row-reverse items-center justify-between p-4 mb-4" style={isFormPage ? { padding: "60px 20px" } : {}}>
+      <div className="headbar-center flex flex-col items-center w-full">
+        <img src={Logo} alt="Logo" className="logo mb-4" style={isFormPage ? {} : {marginTop:"20px"}} />
+
+        {isFormPage && currentStep !== undefined && totalSteps !== undefined && (
+          <div className="w-full px-4 sm:px-8 max-w-3xl">
+            <div className="bg-gray-300 rounded h-6 relative w-full">
               <div
                 id="progressBar"
-                className="bg-green-500 h-6 rounded flex items-center justify-center text-white font-bold text-sm"
+                className="bg-green-500 h-6 rounded flex items-center justify-center text-white font-bold text-sm transition-all duration-300"
                 style={{ width: `${progressPercent}%` }}
               >
                 <span className="absolute inset-0 flex items-center justify-center text-gray-800 font-bold text-sm">
@@ -35,8 +36,9 @@ const Headbar: React.FC<HeadbarProps> = ({ currentStep, totalSteps, isAdminButto
                 </span>
               </div>
             </div>
-          )}
-      </div>      
+          </div>
+        )}
+      </div>
 
       {isAdminButtonVisible && (
         <div className="headbar-right">

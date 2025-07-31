@@ -211,7 +211,7 @@ function Form() {
   }
 
   return (
-    <div className="form-container px-4 sm:px-6 md:px-10 py-6 max-w-4xl mx-auto">
+    <div className="form-container px-4 sm:px-6 md:px-10 py-2 max-w-4xl mx-auto">
       {step === 0 ? (
         <div className="text-center">
           <h1 className="text-3xl font-bold mb-4">Formulaire 🗒️</h1>

@@ -16,7 +16,7 @@ function Home() {
     <>
       <h1 className="Home-title text-center font-bold text-3xl">Bienvenue👋</h1>
       <div className="flex justify-center">
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 px-4 py-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 px-4 py-6 mb-15">
           <Tile
             label="Déposer un feedback"
             bgColor="var(--color-cobalt)"
