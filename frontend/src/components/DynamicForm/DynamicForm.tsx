@@ -64,7 +64,7 @@ export default function DynamicForm({ config, values: initialValues = {}, onChan
                 return (
                     <FilledStar
                     key={i}
-                    size={28}
+                    size={24}
                     className="cursor-pointer text-yellow-400"
                     onClick={() => updateValue(field.label, i)}
                     />

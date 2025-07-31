@@ -136,7 +136,7 @@ const QuestionField: React.FC<QuestionProps> = ({ question, value, onChange, onC
               return (
                 <StarIcon
                   key={i}
-                  size={28}
+                  size={24}
                   className="cursor-pointer text-yellow-400"
                   onClick={() => onChange(question.id, i)}
                 />
