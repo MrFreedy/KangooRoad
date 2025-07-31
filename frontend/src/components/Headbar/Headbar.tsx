@@ -42,7 +42,7 @@ const Headbar: React.FC<HeadbarProps> = ({ currentStep, totalSteps, isAdminButto
 
       {isAdminButtonVisible && (
         <div className="headbar-right">
-          <button className="admin-button">
+          <button className="admin-button" onClick={() => alert('Admin clicked')}>
             <span className="flex items-center gap-2 font-bold">
               <RiVipCrownLine />
               <span className="hidden sm:inline">Administrateur</span>
