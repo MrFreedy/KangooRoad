@@ -31,7 +31,7 @@ export default function DynamicForm({ config, values: initialValues = {}, onChan
   };
 
   return (
-    <div className="bg-gray-100 p-6 rounded-xl space-y-4 w-full">
+    <div className="bg-gray-100 p-6 rounded-xl space-y-4 w-full my-4">
       {config.dynamic.map((field, index) => (
         <div key={index}>
           <label className="block text-lg font-semibold mb-1">
