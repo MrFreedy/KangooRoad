@@ -34,6 +34,7 @@ function Form() {
   const [isNextEnabled, setIsNextEnabled] = useState(false);
 
   const { setCurrentStep, setTotalSteps } = useProgress();
+  let allValid = false;
 
   useEffect(() => {
     const fetchSectionsAndQuestions = async () => {
@@ -81,17 +82,22 @@ function Form() {
   const totalSteps = sections.length + 1;
 
   const handleNext = () => {
-    if (step < totalSteps - 1) setStep(step + 1);
+    if (step < totalSteps - 1) {
+      setStep(step + 1);
+      setIsNextEnabled(false);
+    }
   };
 
   const handlePrev = () => {
-    if (step > 0 && step != 1) setStep(step - 1);
+    if (step > 0 && step != 1){
+      setStep(step - 1);
+    };
     if (step == 1) navigate('/');
   };
 
   function checkMandatoryFields() {
     const requiredFields = document.querySelectorAll('[data-is-mandatory="true"]');
-    const allValid = Array.from(requiredFields).every((el) => {
+    allValid = Array.from(requiredFields).every((el) => {
       if (el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement || el instanceof HTMLSelectElement) {
         if (el instanceof HTMLInputElement && el.type === 'checkbox') return el.checked;
         return el.value.trim() !== '';
