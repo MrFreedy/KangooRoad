@@ -115,7 +115,20 @@ function Form() {
 
       if (question.type === 'date') {
         const date = new Date(val);
-        return val && date >= new Date('2000-01-01');
+        const today = new Date();
+        const minDate = new Date('2000-01-01');
+
+        return (
+          val &&
+          !isNaN(date.getTime()) &&
+          date >= minDate &&
+          date <= today
+        );
+      }
+
+      if (question.type === 'number') {
+        const number = parseFloat(val);
+        return !isNaN(number) && number >= 0;
       }
 
       if (!val || val === 'null' || String(val).trim() === '') {
@@ -154,7 +167,20 @@ function Form() {
 
       if (question.type === 'date') {
         const date = new Date(val);
-        return val && date >= new Date('2000-01-01');
+        const today = new Date();
+        const minDate = new Date('2000-01-01');
+
+        return (
+          val &&
+          !isNaN(date.getTime()) &&
+          date >= minDate &&
+          date <= today
+        );
+      }
+      
+      if (question.type === 'number') {
+        const number = parseFloat(val);
+        return !isNaN(number) && number >= 0;
       }
 
       if (!val || val === 'null' || String(val).trim() === '') {

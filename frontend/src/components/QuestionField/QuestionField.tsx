@@ -80,11 +80,11 @@ const QuestionField: React.FC<QuestionProps> = ({ question, value, onChange, onC
       )}
 
       {question.type === 'date' && (
-        <input type="date" min="2000-01-01" max="2100-12-31" className="mt-1 block w-full border px-3 py-2 rounded-md" value={value?.main || ''} onChange={(e) => onChange(question.id, e.currentTarget.value)}/>
+        <input type="date" min="2000-01-01" max={new Date().toISOString().split('T')[0]} className="mt-1 block w-full border px-3 py-2 rounded-md" value={value?.main || ''} onChange={(e) => onChange(question.id, e.currentTarget.value)}/>
       )}
 
       {question.type === 'number' && (
-        <input type="number" className="mt-1 block w-full border px-3 py-2 rounded-md" value={value?.main || ''} onChange={(e) => onChange(question.id, e.currentTarget.value)}/>
+        <input type="number" min="0" className="mt-1 block w-full border px-3 py-2 rounded-md" value={value?.main || ''} onChange={(e) => onChange(question.id, e.currentTarget.value)}/>
       )}
 
       {question.type === 'file' && (
