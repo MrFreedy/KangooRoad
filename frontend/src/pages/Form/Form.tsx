@@ -211,7 +211,7 @@ function Form() {
   }
 
   return (
-    <div className="form-container px-4 py-6 max-w-6xl mx-auto">
+    <div className="form-container px-30 py-6 max-w-6xl mx-auto">
       {step === 0 ? (
         <div className="text-center">
           <h1 className="text-3xl font-bold mb-4">Formulaire 🗒️</h1>
@@ -227,7 +227,7 @@ function Form() {
         </div>
       ) : (
         <div>
-          <h2 className="text-3xl font-semibold mb-4 text-center">
+          <h2 className="text-3xl font-semibold mb-4 text-start">
             Étape {step} : {sections[step - 1]?.name}
           </h2>
           <div className="flex flex-col items-center">
@@ -258,7 +258,7 @@ function Form() {
                 onValidate={checkMandatoryFields}
               />
             ))}
-            <div className="flex justify-between w-150">
+            <div className="flex justify-between w-full">
               <button
                 onClick={handlePrev}
                 className={`self-start text-white px-4 py-2 rounded

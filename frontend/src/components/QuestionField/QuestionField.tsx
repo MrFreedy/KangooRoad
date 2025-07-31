@@ -19,7 +19,7 @@ interface QuestionProps {
 
 const QuestionField: React.FC<QuestionProps> = ({ question, value, onChange, onChangeDetails, onValidate }) => {
   return (
-    <div className="mb-4 w-150">
+    <div className="mb-4 w-full">
       {question.type !== 'checkbox' && (
         <label className="block text-lg">
           {question.content}
