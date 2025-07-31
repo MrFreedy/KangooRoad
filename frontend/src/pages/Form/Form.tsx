@@ -211,7 +211,7 @@ function Form() {
   }
 
   return (
-    <div className="form-container px-30 py-6 max-w-6xl mx-auto">
+    <div className="form-container px-4 sm:px-6 md:px-10 py-6 max-w-4xl mx-auto">
       {step === 0 ? (
         <div className="text-center">
           <h1 className="text-3xl font-bold mb-4">Formulaire 🗒️</h1>
@@ -227,7 +227,7 @@ function Form() {
         </div>
       ) : (
         <div>
-          <h2 className="text-3xl font-semibold mb-4 text-start">
+          <h2 className="text-xl sm:text-3xl font-semibold mb-4 text-center sm:text-start">
             Étape {step} : {sections[step - 1]?.name}
           </h2>
           <div className="flex flex-col items-center">
@@ -258,19 +258,20 @@ function Form() {
                 onValidate={checkMandatoryFields}
               />
             ))}
-            <div className="flex justify-between w-full">
+            <div className="flex flex-col-reverse sm:flex-row justify-between w-full gap-4 mt-6">
               <button
                 onClick={handlePrev}
-                className={`self-start text-white px-4 py-2 rounded
+                className={`w-full sm:w-auto text-white px-4 py-2 rounded
                   ${step == 1 ? 'bg-red-500 hover:bg-red-600':'bg-gray-500 hover:bg-gray-600'}`}
               >
                 {step > 1 ? "Précédent" : "Quitter"}
               </button>
+
               <button
                 id="next-btn"
                 onClick={handleNext}
                 disabled={!isNextEnabled}
-                className={`self-end px-4 py-2 rounded text-white transition 
+                className={`w-full sm:w-auto px-4 py-2 rounded text-white transition 
                   ${isNextEnabled ? 'bg-blue-500 hover:bg-blue-600' : 'bg-gray-400 cursor-not-allowed'}`}
               >
                 Suivant
