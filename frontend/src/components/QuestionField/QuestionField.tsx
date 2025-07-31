@@ -40,8 +40,7 @@ const QuestionField: React.FC<QuestionProps> = ({ question, value, onChange, onV
       )}
 
       {question.type === 'select' && (
-        <select id={question.id} required={question.is_mandatory} className="mt-1 block w-full border px-3 py-2 rounded-md" value={value || 'null'} data-is-mandatory={question.is_mandatory ? 'true' : 'false'} onChange={(e) => onChange(question.id, e.currentTarget.value)} onInput={onValidate}>
-          <option value='null'>Choisissez une option</option>
+        <select id={question.id} required={question.is_mandatory} className="mt-1 block w-full border px-3 py-2 rounded-md" value={value } data-is-mandatory={question.is_mandatory ? 'true' : 'false'} onChange={(e) => onChange(question.id, e.currentTarget.value)} onInput={onValidate}>
           {Array.isArray(question.options) && question.options.map((option: string, index: number) => (
             <option key={index} value={option}>{option}</option>
           ))}
