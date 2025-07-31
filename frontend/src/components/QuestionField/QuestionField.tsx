@@ -1,5 +1,7 @@
 import React from 'react'
 import './QuestionField.css'
+import { RiStarLine, RiStarFill } from '@remixicon/react';
+import DynamicForm from '../DynamicForm/DynamicForm';
 interface QuestionProps {
   question: {
     id: number;
@@ -91,11 +93,53 @@ const QuestionField: React.FC<QuestionProps> = ({ question, value, onChange, onC
         <input type="file" multiple accept="image/*,video/*" className="mt-1 block w-full border px-3 py-2 rounded-md"/>
       )}
 
-      {question.type === 'rating' && question.options && (
-        <div className="flex space-x-2">
-          {[1, 2, 3, 4, 5].map(i => (
-            <i key={i} className="ri-star-line text-yellow-500 text-xl cursor-pointer"></i>
+      {question.type === 'dynamic' && (
+        <>
+          {(Array.isArray(value?.main) ? value.main : []).map((formData: any, index: number) => (
+            <DynamicForm
+              key={index}
+              config={question.options || { dynamic: [] }}
+              values={formData}
+              onChange={(newValues) => {
+                const newArray = [...(value?.main || [])];
+                newArray[index] = newValues;
+                onChange(question.id, newArray);
+              }}
+              onRemove={() => {
+                const newArray = [...(value?.main || [])];
+                newArray.splice(index, 1);
+                onChange(question.id, newArray);
+              }}
+            />
           ))}
+
+          <button
+            type="button"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 my-2 rounded"
+            onClick={() => {
+              const updated = [...(value?.main || []), {}];
+              onChange(question.id, updated);
+            }}
+          >
+            Ajouter un élément
+          </button>
+        </>
+      )}
+
+      {question.type === 'rating' && question.options && (
+        <div className="flex space-x-1 pt-1">
+          {[1, 2, 3, 4, 5].map(i => {
+            const current = value?.main || 0;
+            const StarIcon = i <= current ? RiStarFill : RiStarLine;
+            return (
+              <StarIcon
+                key={i}
+                size={28}
+                className="cursor-pointer text-yellow-400"
+                onClick={() => onChange(question.id, i)}
+              />
+            );
+          })}
         </div>
       )}
 
