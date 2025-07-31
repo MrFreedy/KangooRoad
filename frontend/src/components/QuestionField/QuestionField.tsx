@@ -53,12 +53,12 @@ const QuestionField: React.FC<QuestionProps> = ({ question, value, onChange, onC
           value={value?.main !== undefined ? value.main : 'null'}
           onChange={(e) => {
             onChange(question.id, e.currentTarget.value);
-            setTimeout(() => onValidate(), 0); // ⚠️ nécessaire pour is_details dynamique
+            setTimeout(() => onValidate(), 0);
           }}
          
         >
           <option value="null" disabled>
-            {question.is_mandatory ? 'Sélectionnez une option' : 'Optionnel'}
+            Sélectionnez une option
           </option>
           {Array.isArray(question.options) &&
             question.options.map((option: string, index: number) => (
@@ -119,6 +119,7 @@ const QuestionField: React.FC<QuestionProps> = ({ question, value, onChange, onC
             onClick={() => {
               const updated = [...(value?.main || []), {}];
               onChange(question.id, updated);
+              setTimeout(() => onValidate(), 0);
             }}
           >
             Ajouter un élément
@@ -127,19 +128,30 @@ const QuestionField: React.FC<QuestionProps> = ({ question, value, onChange, onC
       )}
 
       {question.type === 'rating' && question.options && (
-        <div className="flex space-x-1 pt-1">
-          {[1, 2, 3, 4, 5].map(i => {
-            const current = value?.main || 0;
-            const StarIcon = i <= current ? RiStarFill : RiStarLine;
-            return (
-              <StarIcon
-                key={i}
-                size={28}
-                className="cursor-pointer text-yellow-400"
-                onClick={() => onChange(question.id, i)}
-              />
-            );
-          })}
+        <div>
+          <div className="flex space-x-1 pt-1">
+            {[1, 2, 3, 4, 5].map(i => {
+              const current = value?.main || 0;
+              const StarIcon = i <= current ? RiStarFill : RiStarLine;
+              return (
+                <StarIcon
+                  key={i}
+                  size={28}
+                  className="cursor-pointer text-yellow-400"
+                  onClick={() => onChange(question.id, i)}
+                />
+              );
+            })}
+          </div>
+          {question.is_details && (
+            <textarea
+              placeholder="Détails (optionnel)"
+              className="mt-2 block w-full border px-3 py-2 rounded-md"
+              value={value?.details || ''}
+              onChange={(e) => onChangeDetails(question.id, e.currentTarget.value)}
+              onInput={onValidate}
+            />
+          )}
         </div>
       )}
 

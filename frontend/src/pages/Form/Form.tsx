@@ -161,6 +161,18 @@ function Form() {
 
       if (!question.is_mandatory) return true;
 
+      if (question.type === 'dynamic') {
+        if (!Array.isArray(val) || val.length === 0) return false;
+
+        return val.every(formItem => {
+          return (question.options?.dynamic || []).every((field: any) => {
+            if (!field.mandatory) return true;
+            const value = formItem[field.label];
+            return value !== undefined && value !== '' && value !== null;
+          });
+        });
+      }
+
       if (question.type === 'checkbox') {
         return answer.main !== undefined ? answer.main : false;
       }
