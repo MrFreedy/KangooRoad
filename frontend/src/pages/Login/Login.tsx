@@ -1,5 +1,4 @@
 import './Login.css'
-import Tile from '@components/Tile/Tile.tsx'
 import { useNavigate } from 'react-router-dom';
 
 import { RiEdit2Line } from '@remixicon/react'
