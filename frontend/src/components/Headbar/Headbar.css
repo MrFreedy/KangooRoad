@@ -17,19 +17,15 @@ a:hover {
   color: white;
 }
 
-.headbar-left {
-  width: 0;
-}
-
 .headbar-center {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
+  pointer-events: none;
 }
 
-.headbar-right {
-  display: flex;
-  align-items: center;
+.headbar-center * {
+  pointer-events: auto;
 }
 
 .logo {
@@ -57,4 +53,18 @@ a:hover {
 
 .admin-button:hover {
   background-color: var(--color-primary-hover);
+}
+
+.back-button {
+  z-index: 10;
+  color: var(--color-bar);
+  border: none;
+  padding: 8px 14px;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background-color 0.2s ease;
 }

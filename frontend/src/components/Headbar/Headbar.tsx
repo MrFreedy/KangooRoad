@@ -1,27 +1,35 @@
 import React from 'react';
 import './Headbar.css';
 import Logo from '@assets/logo.svg';
-import { RiVipCrownLine } from '@remixicon/react';
+import { RiArrowLeftLine, RiVipCrownLine } from '@remixicon/react';
 import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 interface HeadbarProps {
   currentStep?: number;
   totalSteps?: number;
-  isAdminButtonVisible?: boolean;
 }
 
-const Headbar: React.FC<HeadbarProps> = ({ currentStep, totalSteps, isAdminButtonVisible = true }) => {
+const Headbar: React.FC<HeadbarProps> = ({ currentStep, totalSteps}) => {
   const location = useLocation();
   const navigate = useNavigate();
   const isFormPage = location.pathname === '/form';
-  isAdminButtonVisible = location.pathname === '/';
-  
+  const showAdminButton = location.pathname === '/';
+  const showBackButton = location.pathname === '/overview';
+
+
   const progressPercent =
     currentStep && totalSteps ? Math.round((currentStep / totalSteps) * 100) : 0;
 
   return (
-    <header className="headbar flex flex-row-reverse items-center justify-between p-4 mb-4" style={isFormPage ? { padding: "60px 20px" } : {}}>
+    <header
+      className="headbar flex items-center justify-between p-4 mb-4"
+      style={{
+        ...(showBackButton && { flexDirection: 'row' }),
+        ...(showAdminButton && { flexDirection: 'row-reverse' }),
+        ...(isFormPage && { padding: '60px 20px' }),
+      }}
+    >
       <div className="headbar-center flex flex-col items-center w-full">
         <img src={Logo} alt="Logo" className="logo mb-4" style={isFormPage ? {} : {marginTop:"20px"}} />
 
@@ -42,12 +50,23 @@ const Headbar: React.FC<HeadbarProps> = ({ currentStep, totalSteps, isAdminButto
         )}
       </div>
 
-      {isAdminButtonVisible && (
-        <div className="headbar-right">
+      {showAdminButton && (
+        <div>
           <button className="admin-button" onClick={() => navigate('/login')}>
             <span className="flex items-center gap-2 font-bold">
               <RiVipCrownLine />
               <span className="hidden sm:inline">Administrateur</span>
+            </span>
+          </button>
+        </div>
+      )}
+
+      {showBackButton && (
+        <div>
+          <button className="back-button bg-blue-500 hover:bg-blue-600 text-white" onClick={() => navigate('/')}>
+            <span className="flex items-center gap-2 font-bold">
+              <RiArrowLeftLine />
+              <span className="hidden sm:inline">Retour</span>
             </span>
           </button>
         </div>

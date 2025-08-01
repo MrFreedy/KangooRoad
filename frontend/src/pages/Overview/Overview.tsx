@@ -1,4 +1,4 @@
-import './Home.css'
+import './Overview.css'
 import Tile from '@components/Tile/Tile.tsx'
 import { useNavigate } from 'react-router-dom';
 
@@ -9,7 +9,7 @@ import { RiContactsBookLine } from '@remixicon/react'
 import { RiArchiveLine } from '@remixicon/react'
 import { RiInformation2Line } from '@remixicon/react'
 
-function Home() {
+function Overview() {
   const navigate = useNavigate();
 
   return (
@@ -65,4 +65,4 @@ function Home() {
   )
 }
 
-export default Home
+export default Overview
