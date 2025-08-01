@@ -3,6 +3,7 @@ import './Headbar.css';
 import Logo from '@assets/logo.svg';
 import { RiVipCrownLine } from '@remixicon/react';
 import { useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 interface HeadbarProps {
   currentStep?: number;
@@ -12,6 +13,7 @@ interface HeadbarProps {
 
 const Headbar: React.FC<HeadbarProps> = ({ currentStep, totalSteps, isAdminButtonVisible = true }) => {
   const location = useLocation();
+  const navigate = useNavigate();
   const isFormPage = location.pathname === '/form';
   isAdminButtonVisible = location.pathname === '/';
   
@@ -42,7 +44,7 @@ const Headbar: React.FC<HeadbarProps> = ({ currentStep, totalSteps, isAdminButto
 
       {isAdminButtonVisible && (
         <div className="headbar-right">
-          <button className="admin-button" onClick={() => alert('Admin clicked')}>
+          <button className="admin-button" onClick={() => navigate('/login')}>
             <span className="flex items-center gap-2 font-bold">
               <RiVipCrownLine />
               <span className="hidden sm:inline">Administrateur</span>

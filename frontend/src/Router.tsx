@@ -1,7 +1,8 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Layout from './components/Layout';
+import Layout from '@components/Layout';
 import Home from './pages/Home/Home';
 import Form from './pages/Form/Form';
+import Login from './pages/Login/Login';
 import { ProgressProvider } from './context/ProgressContext';
 
 const AppRouter = () => (
@@ -12,6 +13,7 @@ const AppRouter = () => (
           <Route path="/" element={<Home />} />
           <Route path="/form" element={<Form />} />
         </Route>
+        <Route path="/login" element={<Login />} />
       </Routes>
     </ProgressProvider>
   </BrowserRouter>
