@@ -223,6 +223,9 @@ function Form() {
           </div>
           <button onClick={handleNext} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
             Commencer
+          </button><br></br>
+          <button onClick={() => navigate('/')} className="bg-gray-500 hover:bg-gray-600 text-white font-bold mt-4 py-2 px-4 rounded">
+            Retour
           </button>
         </div>
       ) : (
