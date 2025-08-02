@@ -1,13 +1,7 @@
 import './Login.css'
 import { useNavigate } from 'react-router-dom';
-
-import { RiEdit2Line } from '@remixicon/react'
-import { RiArticleLine } from '@remixicon/react'
-import { RiImage2Line } from '@remixicon/react'
-import { RiContactsBookLine } from '@remixicon/react'
-import { RiArchiveLine } from '@remixicon/react'
-import { RiInformation2Line } from '@remixicon/react'
 import Logo from '@assets/logo.svg';
+
 function Login() {
   const navigate = useNavigate();
 
