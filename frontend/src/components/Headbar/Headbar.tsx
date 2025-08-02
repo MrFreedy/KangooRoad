@@ -14,6 +14,7 @@ const Headbar: React.FC<HeadbarProps> = ({ currentStep, totalSteps}) => {
   const location = useLocation();
   const navigate = useNavigate();
   const isFormPage = location.pathname === '/form';
+  const isOverviewPage = location.pathname === '/overview';
   const showAdminButton = location.pathname === '/';
   const showBackButton = location.pathname === '/overview';
 
@@ -63,7 +64,15 @@ const Headbar: React.FC<HeadbarProps> = ({ currentStep, totalSteps}) => {
 
       {showBackButton && (
         <div>
-          <button className="back-button bg-blue-500 hover:bg-blue-600 text-white" onClick={() => navigate('/')}>
+          <button className="back-button bg-blue-500 hover:bg-blue-600 text-white" onClick={() => {
+            if (isOverviewPage && sessionStorage.getItem('insideFeedbacks') === 'true') {
+              navigate('/overview', { replace: true });
+              window.location.reload();
+              sessionStorage.removeItem('insideFeedbacks');
+            } else {
+              navigate('/');
+            }
+          }}>
             <span className="flex items-center gap-2 font-bold">
               <RiArrowLeftLine />
               <span className="hidden sm:inline">Retour</span>
