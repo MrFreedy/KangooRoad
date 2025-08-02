@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser');
 const dotenv = require('dotenv');
 const questionRouter = require('./routes/questions');
 const sectionsRouter = require('./routes/sections');
+const feedbacksRouter = require('./routes/feedbacks');
 const checkCookie = require('./middleware/checkCookie');
 
 const port = 3002;
@@ -22,6 +23,7 @@ app.use(cookieParser());
 
 app.use('/questions', questionRouter);
 app.use('/sections', sectionsRouter);
+app.use('/feedbacks', feedbacksRouter);
 
 app.get('/', checkCookie, (req, res) => {
     res.send('Welcome to the Kangooroad API!');
