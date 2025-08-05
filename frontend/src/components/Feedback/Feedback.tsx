@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { RiCalendar2Line, RiSchoolLine, RiMapPin2Line, RiArrowDownSLine } from '@remixicon/react';
+import { RiCalendar2Line, RiSchoolLine, RiMapPin2Line, RiArrowDownSLine,RiStarFill, RiStarLine } from '@remixicon/react';
 import './Feedback.css';
 
 interface FeedbackProps {
@@ -85,6 +85,20 @@ const Feedback: React.FC<FeedbackProps> = ({
     setOpenSteps((prev) => ({ ...prev, [index]: !prev[index] }));
   };
 
+    const renderRating = (value: number) => {
+        const stars = [];
+        for (let i = 1; i <= 5; i++) {
+            stars.push(
+            i <= value ? (
+                <RiStarFill key={i} className="inline text-yellow-500" />
+            ) : (
+                <RiStarLine key={i} className="inline text-gray-300" />
+            )
+            );
+        }
+        return <span className="ml-2">{stars}</span>;
+    };
+
   return (
     <div
       className="feedback-item mb-4 border border-gray-200 rounded-md overflow-hidden w-full justify-self-center"
@@ -141,7 +155,13 @@ const Feedback: React.FC<FeedbackProps> = ({
                       {step.questions.map((q, i) => (
                         <li key={i} className="p-2 rounded">
                           <strong className="block text-sm font-medium text-gray-700">{q.label}</strong>
-                          <p className="text-sm text-gray-700">{Array.isArray(q.value) ? q.value.join(', ') : q.value}</p>
+                            <p className="text-sm text-gray-700">
+                                {q.type === 'rating'
+                                    ? renderRating(typeof q.value === 'number' ? q.value : parseInt(q.value as string, 10))
+                                    : Array.isArray(q.value)
+                                    ? q.value.join(', ')
+                                    : q.value}
+                            </p>
                           {'details' in q && q.details && (
                             <p className="text-sm text-gray-500">{q.details}</p>
                           )}
