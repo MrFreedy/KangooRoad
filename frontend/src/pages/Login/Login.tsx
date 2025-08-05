@@ -17,7 +17,7 @@ function Login() {
               <input type="password" placeholder="Mot de passe" className="p-2 border rounded" />
               <button type="submit" className="login-button">Se connecter</button>
               <button type="button" onClick={() => navigate('/')} className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded cursor-pointer">
-                Retour 
+                Retour
               </button>
             </form>
           </div>
