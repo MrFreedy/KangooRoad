@@ -111,7 +111,7 @@ const Feedback: React.FC<FeedbackProps> = ({
         className="w-full text-left p-4 bg-gray-100 hover:bg-gray-200 cursor-pointer"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center p-4">
           <div className="space-y-2">
             <div className="flex items-center space-x-2">
               <RiCalendar2Line className="text-blue-500" />
