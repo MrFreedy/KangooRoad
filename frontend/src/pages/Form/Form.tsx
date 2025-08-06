@@ -35,6 +35,7 @@ const Form = () => {
 
   const { setCurrentStep, setTotalSteps } = useProgress();
   const totalSteps = sections.length + 1;
+  const isLastStep = step === totalSteps - 1;
 
   useEffect(() => {
     fetchFormStructure();
@@ -112,6 +113,9 @@ const Form = () => {
         answers,
         savedAt: Date.now()
       }));
+    }else{
+      localStorage.setItem('formProgress',sessionStorage.getItem('formProgress'));
+      alert("Formulaire enregistré avec succès");
     }
   };
 
@@ -235,9 +239,9 @@ const Form = () => {
                 id="next-btn"
                 onClick={handleNext}
                 disabled={!isNextEnabled}
-                className={`w-full sm:w-auto px-4 py-2 rounded text-white transition ${isNextEnabled ? 'bg-blue-500 hover:bg-blue-600' : 'bg-gray-400 cursor-not-allowed'}`}
+                className={`w-full sm:w-auto px-4 py-2 rounded text-white transition ${isNextEnabled ? isLastStep ? 'bg-green-500 hover:bg-green-600':'bg-blue-500 hover:bg-blue-600' : 'bg-gray-400 cursor-not-allowed'}`}
               >
-                Suivant
+                {isLastStep ? 'Terminer' : 'Suivant'}
               </button>
             </div>
           </div>
