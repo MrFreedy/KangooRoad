@@ -102,7 +102,7 @@ const Form = () => {
     }
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (step < totalSteps - 1) {
       const next = step + 1;
       setStep(next);
@@ -113,9 +113,20 @@ const Form = () => {
         answers,
         savedAt: Date.now()
       }));
-    }else{
-      localStorage.setItem('formProgress',sessionStorage.getItem('formProgress'));
-      alert("Formulaire enregistré avec succès");
+    }else {
+      const form_data = buildFormData();
+
+      await fetch(`${API_BASE_URL}feedbacks`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ form_data }),
+      });
+
+      alert("Formulaire enregistré avec succès !");
+      localStorage.removeItem('formProgress');
+      navigate('/');
     }
   };
 
@@ -178,6 +189,61 @@ const Form = () => {
     });
 
     setIsNextEnabled(valid);
+  };
+
+  const buildFormData = () => {
+    return sections.map(section => {
+      const formattedQuestions = section.questions.map(question => {
+        const answer = answers[question.id] || {};
+
+        if (question.type === 'dynamic') {
+          return {
+            type: question.type,
+            label: question.content,
+            value: Array.isArray(answer.main)
+              ? answer.main.map((item: any) => {
+                  const obj: any = {};
+                  Object.entries(item).forEach(([key, field]) => {
+                    obj[key] = {
+                      type: field.type,
+                      value: field.value,
+                      ...(field.option && { option: field.option }),
+                    };
+                  });
+                  return obj;
+                })
+              : [],
+            ...(question.questionId && { questionId: question.questionId }),
+          };
+        }
+
+        const base = {
+          type: question.type,
+          label: question.content,
+          value: answer.main ?? '',
+        };
+
+        if (question.type === 'rating' && answer.option) {
+          return { ...base, ratingOption: answer.option };
+        }
+
+        if (answer.details) {
+          return { ...base, details: answer.details };
+        }
+
+        if (question.option) {
+          return { ...base, option: question.option };
+        }
+
+        return base;
+      });
+
+      return {
+        questions: formattedQuestions,
+        stepLabel: section.name,
+        stepVisibility: section.is_active ? "1" : "0",
+      };
+    });
   };
 
   return (
