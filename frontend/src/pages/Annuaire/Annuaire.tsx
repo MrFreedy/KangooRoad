@@ -49,51 +49,51 @@ function Annuaire() {
   return (
     <>
         <h1 className="Home-title text-center font-bold text-3xl">Annuaire 📧</h1>
-        <div className="flex flex-wrap justify-center gap-6 px-4 py-6">
-        <div>
-            <label className="block font-semibold mb-1">École :</label>
-            <select
-            className="border rounded px-4 py-2"
-            value={selectedSchool}
-            onChange={(e) => setSelectedSchool(e.target.value)}
-            >
-            <option value="Toutes">Toutes</option>
-            {uniqueSchools.map((s) => (
-                <option key={s} value={s}>{s}</option>
-            ))}
-            </select>
+        <div className="flex flex-col items-center gap-6 px-4 py-6 sm:flex-row sm:flex-wrap sm:justify-center">
+            <div>
+                <label className="block font-semibold mb-1">École :</label>
+                <select
+                className="border rounded px-4 py-2"
+                value={selectedSchool}
+                onChange={(e) => setSelectedSchool(e.target.value)}
+                >
+                <option value="Toutes">Toutes</option>
+                {uniqueSchools.map((s) => (
+                    <option key={s} value={s}>{s}</option>
+                ))}
+                </select>
+            </div>
+
+            <div>
+                <label className="block font-semibold mb-1">Pays :</label>
+                <select
+                className="border rounded px-4 py-2"
+                value={selectedCountry}
+                onChange={(e) => setSelectedCountry(e.target.value)}
+                >
+                <option value="Toutes">Toutes</option>
+                {uniqueCountries.map((c) => (
+                    <option key={c} value={c}>{c}</option>
+                ))}
+                </select>
+            </div>
+
+            <div>
+                <label className="block font-semibold mb-1">Statut :</label>
+                <select
+                className="border rounded px-4 py-2"
+                value={selectedType}
+                onChange={(e) => setSelectedType(e.target.value)}
+                >
+                <option value="Tous">Tous</option>
+                {uniqueTypes.map((c) => (
+                    <option key={c} value={c}>{c.charAt(0).toUpperCase() + c.slice(1)}</option>
+                ))}
+                </select>
+            </div>
         </div>
 
-        <div>
-            <label className="block font-semibold mb-1">Pays :</label>
-            <select
-            className="border rounded px-4 py-2"
-            value={selectedCountry}
-            onChange={(e) => setSelectedCountry(e.target.value)}
-            >
-            <option value="Toutes">Toutes</option>
-            {uniqueCountries.map((c) => (
-                <option key={c} value={c}>{c}</option>
-            ))}
-            </select>
-        </div>
-
-        <div>
-            <label className="block font-semibold mb-1">Statut :</label>
-            <select
-            className="border rounded px-4 py-2"
-            value={selectedType}
-            onChange={(e) => setSelectedType(e.target.value)}
-            >
-            <option value="Tous">Tous</option>
-            {uniqueTypes.map((c) => (
-                <option key={c} value={c}>{c.charAt(0).toUpperCase() + c.slice(1)}</option>
-            ))}
-            </select>
-        </div>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-4 gap-8 px-30 py-6 mb-15">
+        <div className="grid grid-cols-1 sm:grid-cols-4 gap-8 px-8 sm:px-30 py-6 mb-15">
         {filteredFeedbacks.map((fb, idx) => (
             <AnnuaireCard key={idx} {...fb} />
         ))}
