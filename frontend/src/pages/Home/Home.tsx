@@ -43,7 +43,7 @@ function Home() {
             bgColor="var(--color-pink)"
             hoverColor="var(--color-pink-hover)"
             icon={<RiContactsBookLine className="text-white" />}
-            onClick={() => alert('Notifications clicked')}
+            onClick={() => navigate('/annuaire')}
           />
           <Tile
             label="Archives"

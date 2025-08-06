@@ -16,7 +16,7 @@ const Headbar: React.FC<HeadbarProps> = ({ currentStep, totalSteps}) => {
   const isFormPage = location.pathname === '/form';
   const isOverviewPage = location.pathname === '/overview';
   const showAdminButton = location.pathname === '/';
-  const showBackButton = location.pathname === '/overview';
+  const showBackButton = location.pathname === '/overview' || location.pathname === '/annuaire';
 
 
   const progressPercent =
