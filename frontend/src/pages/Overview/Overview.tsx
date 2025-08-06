@@ -25,7 +25,9 @@ function Overview() {
       const res = await fetch(`${API_BASE_URL}feedbacks`);
       const data = await res.json();
       data.sort((a, b) => (b.year || 0) - (a.year || 0));
-      setFeedbacks(data);
+      const visibleOnly = data.filter(fb => fb.is_visible === true);
+
+      setFeedbacks(visibleOnly);
     } catch (error) {
       console.error('Erreur lors du chargement des feedbacks :', error);
     }
