@@ -55,6 +55,10 @@ const Form = () => {
     if (step > 0) checkMandatoryFields();
   }, [answers, step]);
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [step]);
+
   const fetchFormStructure = async () => {
     try {
       const [sectionsData, questionsRaw] = await Promise.all([
