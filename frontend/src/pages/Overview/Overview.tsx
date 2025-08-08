@@ -130,7 +130,7 @@ function Overview() {
             </div>
           </div>
 
-          <div className="px-4 py-6 space-y-6 mb-10 mx-5 sm:mx-20">
+          <div className="px-4 py-6 space-y-6 mb-15 sm:mb-10 mx-5 sm:mx-20">
             {filteredFeedbacks.map((fb, idx) => (
               <Feedback key={idx} {...fb} />
             ))}
