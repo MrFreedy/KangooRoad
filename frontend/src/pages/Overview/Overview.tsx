@@ -87,7 +87,7 @@ function Overview() {
         <>
           <h1 className="Home-title text-center font-bold text-2xl">Aperçu des feedbacks 📖:</h1>
           <div className="flex flex-wrap justify-center gap-6 px-4 py-6">
-            <div>
+            <div className="order-1">
               <label className="block font-semibold mb-1">Année :</label>
               <select
                 className="border rounded px-4 py-2"
@@ -101,7 +101,7 @@ function Overview() {
               </select>
             </div>
 
-            <div>
+            <div className="order-3 md:order-2">
               <label className="block font-semibold mb-1">École :</label>
               <select
                 className="border rounded px-4 py-2"
@@ -115,7 +115,7 @@ function Overview() {
               </select>
             </div>
 
-            <div>
+            <div className="order-2 md:order-3">
               <label className="block font-semibold mb-1">Pays :</label>
               <select
                 className="border rounded px-4 py-2"
@@ -130,7 +130,7 @@ function Overview() {
             </div>
           </div>
 
-            <div className="px-4 py-6 space-y-6 mb-10 mx-20">
+          <div className="px-4 py-6 space-y-6 mb-10 mx-5 sm:mx-20">
             {filteredFeedbacks.map((fb, idx) => (
               <Feedback key={idx} {...fb} />
             ))}
