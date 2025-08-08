@@ -2,10 +2,12 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../db');
 const bcrypt = require('bcrypt');
-const checkCookie = require('../middleware/checkCookie');
+const jwt = require('jsonwebtoken');
 
+require('dotenv').config();
 
-
+const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '1h';
 const SALT_ROUNDS = 12;
 
 const hashPassword = async (password) => {
@@ -45,8 +47,21 @@ router.post('/login', async (req, res) => {
             [normalizedIp, user.id]
         );
 
+        if (!JWT_SECRET) {
+            console.error('JWT_SECRET is not set in environment variables');
+            return res.status(500).json({ error: 'Server misconfiguration' });
+        }
+
+        const token = jwt.sign(
+            { id: user.id, username: user.username, email: user.email },
+            JWT_SECRET,
+            { expiresIn: JWT_EXPIRES_IN }
+        );
+
         res.status(200).json({
+            success: true,
             message: 'Login successful',
+            token,
             user: {
                 id: user.id,
                 username: user.username,
