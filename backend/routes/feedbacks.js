@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../db');
 const authenticateToken = require('../middleware/authenticateToken');
+const requireRole = require('../middleware/requireRole');
 
 router.use(authenticateToken);
 
@@ -30,6 +31,21 @@ router.post('/', async (req, res) => {
     res.status(200).send('Feedback created successfully');
   } catch (error) {
     console.error('Error creating feedback:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+router.delete('/:id', requireRole('admin'), async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const { rowCount } = await pool.query('DELETE FROM feedbacks WHERE id = $1', [id]);
+    if (rowCount === 0) {
+      return res.status(404).json({ error: 'Feedback not found' });
+    }
+    res.status(200).send('Feedback deleted successfully');
+  } catch (error) {
+    console.error('Error deleting feedback:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
