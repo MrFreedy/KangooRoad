@@ -64,9 +64,8 @@ const Headbar: React.FC<HeadbarProps> = ({ currentStep, totalSteps}) => {
         <div>
           <button className="back-button bg-blue-500 hover:bg-blue-600 text-white" onClick={() => {
             if (isOverviewPage && sessionStorage.getItem('insideFeedbacks') === 'true') {
-              navigate('/overview', { replace: true });
-              window.location.reload();
               sessionStorage.removeItem('insideFeedbacks');
+              navigate('/overview', { replace: true, state: { reset: true } });
             } else {
               navigate('/');
             }

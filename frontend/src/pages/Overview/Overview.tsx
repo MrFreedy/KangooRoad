@@ -1,14 +1,16 @@
 import './Overview.css'
 import Tile from '@components/Tile/Tile.tsx'
 import Feedback from '@components/Feedback/Feedback.tsx'
-import { useNavigate } from 'react-router-dom';
 import Headbar from '@components/Headbar/Headbar';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import { RiBriefcaseLine, RiGraduationCapLine } from '@remixicon/react'
 import { useEffect, useState, useMemo } from 'react';
 import api from '@src/services/apiService';
 function Overview() {
   const navigate = useNavigate();
+  const location = useLocation();
+
   const [feedbacks, setFeedbacks] = useState([]);
   const [selectedYear, setSelectedYear] = useState<string>('Toutes');
   const [selectedSchool, setSelectedSchool] = useState<string>('Toutes');
@@ -18,6 +20,13 @@ function Overview() {
   useEffect(() => {
     fetchFeedbacks();
   }, []);
+
+
+  useEffect(() => {
+    if (location.state?.reset) {
+      setUserTypeSelected(null);
+    }
+  }, [location.state]);
 
   const fetchFeedbacks = async () => {
     try {
