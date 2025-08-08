@@ -3,7 +3,7 @@ import Tile from '@components/Tile/Tile.tsx'
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '@src/services/apiService';
-
+import { useAuth } from '@src/context/AuthContext';
 import { RiEdit2Line } from '@remixicon/react'
 import { RiArticleLine } from '@remixicon/react'
 import { RiImage2Line } from '@remixicon/react'
@@ -15,8 +15,7 @@ type User = { id: number; username: string; is_admin: boolean };
 
 function Home() {
   const navigate = useNavigate();
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { user, error } = useAuth();
   const [errMsg, setErrMsg] = useState<string>('');
 
   return (
@@ -39,7 +38,7 @@ function Home() {
       )}
 
       <div className="flex justify-center">
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 px-4 py-6 mb-15">
+        <div className={`grid grid-cols-1 sm:grid-cols-3 gap-8 px-4 py-6 mb-20`}>
           <Tile
             label="Déposer un feedback"
             bgColor="var(--color-cobalt)"
