@@ -3,6 +3,7 @@ const router = express.Router();
 const pool = require('../db');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const authenticateToken = require('../middleware/authenticateToken');
 
 require('dotenv').config();
 
@@ -77,4 +78,19 @@ router.post('/login', async (req, res) => {
     }
 });
 
+router.get('/me', authenticateToken, async (req, res) => {
+  try {
+    const { rows } = await pool.query(
+      'SELECT id, username, is_admin FROM users WHERE id = $1',
+      [req.user.id]
+    );
+    if (rows.length === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    res.json({ user: rows[0] });
+  } catch (e) {
+    console.error('Error in /users/me:', e);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 module.exports = router;

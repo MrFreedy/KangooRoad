@@ -1,7 +1,8 @@
 import React from 'react';
+import { useState } from 'react';
 import './Headbar.css';
 import Logo from '@assets/logo.svg';
-import { RiArrowLeftLine, RiVipCrownLine } from '@remixicon/react';
+import { RiArrowLeftLine, RiDoorLine, RiDoorOpenLine, RiKeyLine } from '@remixicon/react';
 import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
@@ -15,19 +16,27 @@ const Headbar: React.FC<HeadbarProps> = ({ currentStep, totalSteps}) => {
   const navigate = useNavigate();
   const isFormPage = location.pathname === '/form';
   const isOverviewPage = location.pathname === '/overview';
-  const showAdminButton = location.pathname === '/';
+  const showConnectionButton = location.pathname === '/';
   const showBackButton = location.pathname === '/overview' || location.pathname === '/annuaire';
 
+  const isLoggedIn = Boolean(localStorage.getItem('token'));
 
+  const [isHovered, setIsHovered] = useState(false);
   const progressPercent =
     currentStep && totalSteps ? Math.round((currentStep / totalSteps) * 100) : 0;
 
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    window.location.href = '/';
+  };
+  
   return (
     <header
       className="headbar flex items-center justify-between p-4 mb-4"
       style={{
         ...(showBackButton && { flexDirection: 'row' }),
-        ...(showAdminButton && { flexDirection: 'row-reverse' }),
+        ...(showConnectionButton && { flexDirection: 'row-reverse' }),
         ...(isFormPage && { padding: '60px 20px' }),
       }}
     >
@@ -51,17 +60,6 @@ const Headbar: React.FC<HeadbarProps> = ({ currentStep, totalSteps}) => {
         )}
       </div>
 
-      {showAdminButton && (
-        <div>
-          <button className="admin-button" onClick={() => navigate('/login')}>
-            <span className="flex items-center gap-2 font-bold">
-              <RiVipCrownLine />
-              <span className="hidden sm:inline">Administrateur</span>
-            </span>
-          </button>
-        </div>
-      )}
-
       {showBackButton && (
         <div>
           <button className="back-button bg-blue-500 hover:bg-blue-600 text-white" onClick={() => {
@@ -76,6 +74,22 @@ const Headbar: React.FC<HeadbarProps> = ({ currentStep, totalSteps}) => {
             <span className="flex items-center gap-2 font-bold">
               <RiArrowLeftLine />
               <span className="hidden sm:inline">Retour</span>
+            </span>
+          </button>
+        </div>
+      )}
+
+      {showConnectionButton && isLoggedIn && (
+        <div>
+          <button
+            className="admin-button"
+            onClick={() => handleLogout()}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
+            <span className="flex items-center gap-2 font-bold">
+              {isHovered ? <RiDoorOpenLine /> : <RiDoorLine />}
+              <span className="hidden sm:inline">Se déconnecter</span>
             </span>
           </button>
         </div>

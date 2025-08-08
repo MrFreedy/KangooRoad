@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { RiTimeLine } from '@remixicon/react';
 import { useProgress } from '@context/ProgressContext';
 import QuestionField from '@components/QuestionField/QuestionField';
-import API_BASE_URL from '@src/config';
+import api from '@src/services/apiService';
 
 interface Question {
   id: number;
@@ -57,24 +57,24 @@ const Form = () => {
 
   const fetchFormStructure = async () => {
     try {
-      const [sectionsRes, questionsRes] = await Promise.all([
-        fetch(`${API_BASE_URL}sections`),
-        fetch(`${API_BASE_URL}questions`)
+      const [sectionsData, questionsRaw] = await Promise.all([
+        api.get<Omit<Section, 'questions'>[]>('/sections'),
+        api.get<any[]>('/questions'),
       ]);
 
-      const sectionsData: Omit<Section, 'questions'>[] = await sectionsRes.json();
-      const questionsRaw = await questionsRes.json();
-
-      const questions: Question[] = questionsRaw.map((q: any) => ({ ...q, sectionId: q.section_id }))
+      const questions: Question[] = questionsRaw
+        .map((q: any) => ({ ...q, sectionId: q.section_id }))
         .sort((a, b) => a.order - b.order);
 
-      const enrichedSections: Section[] = sectionsData.map(section => ({
-        ...section,
-        questions: questions.filter(q => q.sectionId === section.id)
-      })).sort((a, b) => a.order - b.order);
+      const enrichedSections: Section[] = sectionsData
+        .map((section) => ({
+          ...section,
+          questions: questions.filter((q) => q.sectionId === section.id),
+        }))
+        .sort((a, b) => a.order - b.order);
 
       setSections(enrichedSections);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erreur de chargement :', error);
     }
   };
@@ -116,13 +116,7 @@ const Form = () => {
     }else {
       const form_data = buildFormData();
 
-      await fetch(`${API_BASE_URL}feedbacks`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ form_data }),
-      });
+      await api.post('/feedbacks', { form_data });
 
       alert("Formulaire enregistré avec succès !");
       localStorage.removeItem('formProgress');

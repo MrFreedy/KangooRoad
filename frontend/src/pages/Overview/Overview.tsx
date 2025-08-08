@@ -6,8 +6,7 @@ import Headbar from '@components/Headbar/Headbar';
 
 import { RiBriefcaseLine, RiGraduationCapLine } from '@remixicon/react'
 import { useEffect, useState, useMemo } from 'react';
-import API_BASE_URL from '@src/config';
-
+import api from '@src/services/apiService';
 function Overview() {
   const navigate = useNavigate();
   const [feedbacks, setFeedbacks] = useState([]);
@@ -22,8 +21,8 @@ function Overview() {
 
   const fetchFeedbacks = async () => {
     try {
-      const res = await fetch(`${API_BASE_URL}feedbacks`);
-      const data = await res.json();
+      const data = await api.get('/feedbacks');
+      
       data.sort((a, b) => (b.year || 0) - (a.year || 0));
       const visibleOnly = data.filter(fb => fb.is_visible === true);
 
