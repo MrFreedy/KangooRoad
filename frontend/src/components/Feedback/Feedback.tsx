@@ -85,19 +85,48 @@ const Feedback: React.FC<FeedbackProps> = ({
     setOpenSteps((prev) => ({ ...prev, [index]: !prev[index] }));
   };
 
-    const renderRating = (value: number) => {
-        const stars = [];
-        for (let i = 1; i <= 5; i++) {
-            stars.push(
-            i <= value ? (
-                <RiStarFill key={i} className="inline text-yellow-500" />
-            ) : (
-                <RiStarLine key={i} className="inline text-gray-300" />
-            )
-            );
-        }
-        return <span className="ml-2">{stars}</span>;
-    };
+  const renderRating = (value: number) => {
+      const stars = [];
+      for (let i = 1; i <= 5; i++) {
+          stars.push(
+          i <= value ? (
+              <RiStarFill key={i} className="inline text-yellow-500" />
+          ) : (
+              <RiStarLine key={i} className="inline text-gray-300" />
+          )
+          );
+      }
+      return <span className="ml-2">{stars}</span>;
+  };
+
+  const isDynamic = (q: Question): q is DynamicQuestion => q.type === 'dynamic';
+
+  const renderDynamic = (dq: DynamicQuestion, renderRating: (v: number) => JSX.Element) => {
+    if (!dq.value || dq.value.length === 0) {
+      return <em className="text-gray-500">Aucune entrée</em>;
+    }
+
+    return (
+      <div className="space-y-3">
+        {dq.value.map((item, idx) => (
+          <div key={idx} className="rounded border border-gray-200 p-2">
+            <div className="text-xs text-gray-500 mb-1">Entrée #{idx + 1}</div>
+            <ul className="grid sm:grid-cols-2 gap-1">
+              {Object.entries(item).map(([subLabel, field]) => (
+                <li key={subLabel} className="text-sm text-gray-700">
+                  <span className="font-bold">{subLabel} :</span>{' '}
+                  {field.type === 'rating'
+                    ? renderRating(parseInt(String(field.value), 10))
+                    : <span>{String(field.value)}</span>
+                  }
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    );
+  };
 
   return (
     <div
@@ -153,15 +182,24 @@ const Feedback: React.FC<FeedbackProps> = ({
                   <div className="p-3 space-y-2 bg-white">
                     <ul className="space-y-2">
                       {step.questions.map((q, i) => (
-                        <li key={i} className="p-2 rounded">
-                          <strong className="block text-sm font-medium text-gray-700">{q.label}</strong>
+                        <li key={i} className="p-2 rounded text-justify">
+                          <strong className="block text-sm text-bold text-gray-700">{q.label}</strong>
+
+                          {/* Valeur */}
+                          {isDynamic(q) ? (
+                            renderDynamic(q, renderRating)
+                          ) : q.type === 'rating' ? (
                             <p className="text-sm text-gray-700">
-                                {q.type === 'rating'
-                                    ? renderRating(typeof q.value === 'number' ? q.value : parseInt(q.value as string, 10))
-                                    : Array.isArray(q.value)
-                                    ? q.value.join(', ')
-                                    : q.value}
+                              {renderRating(typeof q.value === 'number' ? q.value : parseInt(q.value as string, 10))}
                             </p>
+                          ) : Array.isArray(q.value) ? (
+                            // fichiers ou listes simples
+                            <p className="text-sm text-gray-700">{q.value.join(', ')}</p>
+                          ) : (
+                            <p className="text-sm text-gray-700">{q.value}</p>
+                          )}
+
+                          {/* Détails optionnels */}
                           {'details' in q && q.details && (
                             <p className="text-sm text-gray-500">{q.details}</p>
                           )}
