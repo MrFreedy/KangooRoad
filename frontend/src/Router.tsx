@@ -8,10 +8,10 @@ import Annuaire from './pages/Annuaire/Annuaire';
 import { ProgressProvider } from './context/ProgressContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import PrivateRoute from './PrivateRoute';
-
+import Loading from '@components/Loading/Loading';
 function LoginGate() {
   const { user, loading } = useAuth();
-  if (loading) return <div className="min-h-screen flex items-center justify-center">Chargement…</div>;
+  if (loading) return <Loading />;
   if (user) return <Navigate to="/" replace />;
   return <Login />;
 }
