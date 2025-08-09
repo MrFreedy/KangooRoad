@@ -5,6 +5,7 @@ import Form from './pages/Form/Form';
 import Login from './pages/Login/Login';
 import Overview from './pages/Overview/Overview';
 import Annuaire from './pages/Annuaire/Annuaire';
+import Policy from './pages/Policy/Policy';
 import { ProgressProvider } from './context/ProgressContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import PrivateRoute from './PrivateRoute';
@@ -28,6 +29,7 @@ const AppRouter = () => (
               <Route path="/form" element={<Form />} />
               <Route path="/overview" element={<Overview />} />
               <Route path="/annuaire" element={<Annuaire />} />
+              <Route path="/policy" element={<Policy/>} />
             </Route>
           </Route>
 
