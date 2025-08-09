@@ -6,6 +6,7 @@ import Login from './pages/Login/Login';
 import Overview from './pages/Overview/Overview';
 import Annuaire from './pages/Annuaire/Annuaire';
 import Policy from './pages/Policy/Policy';
+import Contact from './pages/Contact/Contact';
 import { ProgressProvider } from './context/ProgressContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import PrivateRoute from './PrivateRoute';
@@ -31,6 +32,7 @@ const AppRouter = () => (
               <Route path="/annuaire" element={<Annuaire />} />
               <Route path="/policy" element={<Policy/>} />
             </Route>
+            <Route path="/contact" element={<Contact/>}/>
           </Route>
 
           {/* Public */}

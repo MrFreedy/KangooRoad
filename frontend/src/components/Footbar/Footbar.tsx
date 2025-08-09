@@ -8,7 +8,7 @@ const Footbar: React.FC = () => {
         <a href="/policy" className="hover:underline mx-2 text-sky-500 underline">
           Politique de confidentialité
         </a>
-        <a href="/terms" className="hover:underline mx-2 text-sky-500 underline">
+        <a href="/contact" className="hover:underline mx-2 text-sky-500 underline">
           Nous contacter
         </a>
       </div>
