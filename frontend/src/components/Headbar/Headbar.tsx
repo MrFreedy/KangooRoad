@@ -16,8 +16,9 @@ const Headbar: React.FC<HeadbarProps> = ({ currentStep, totalSteps}) => {
   const navigate = useNavigate();
   const isFormPage = location.pathname === '/form';
   const isOverviewPage = location.pathname === '/overview';
+  const isSectionPage = location.pathname === '/sections';
   const showConnectionButton = location.pathname === '/';
-  const showBackButton = location.pathname === '/overview' || location.pathname === '/annuaire' || location.pathname === '/policy';
+  const showBackButton = location.pathname === '/overview' || location.pathname === '/annuaire' || location.pathname === '/policy' || location.pathname === '/sections';
 
   const isLoggedIn = Boolean(localStorage.getItem('token'));
 
@@ -66,6 +67,9 @@ const Headbar: React.FC<HeadbarProps> = ({ currentStep, totalSteps}) => {
             if (isOverviewPage && sessionStorage.getItem('insideFeedbacks') === 'true') {
               sessionStorage.removeItem('insideFeedbacks');
               navigate('/overview', { replace: true, state: { reset: true } });
+            } else if (isSectionPage && sessionStorage.getItem('insideCreationForm') === 'true') {
+              sessionStorage.removeItem('insideCreationForm');
+              navigate('/sections', { replace: true, state: { reset: true } });
             } else {
               navigate('/');
             }
