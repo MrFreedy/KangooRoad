@@ -16,4 +16,14 @@ router.get('/', async (req, res) => {
     }
 });
 
+router.post('/', async (req, res) => {
+    try {
+        const { name, order, is_active } = req.body;
+        await pool.query('INSERT INTO sections (name, "order", is_active) VALUES ($1, $2, $3)',[name, order, is_active]);
+        res.status(200).send('Section created');
+    } catch (err) {
+        res.status(500).json({error: err.message})
+    }
+});
+
 module.exports = router;
