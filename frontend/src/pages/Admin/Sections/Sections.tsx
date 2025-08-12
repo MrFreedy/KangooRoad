@@ -1,79 +1,138 @@
 import './Sections.css'
-import AnnuaireCard from '@components/AnnuaireCard/AnnuaireCard.tsx'
-import Feedback from '@components/Feedback/Feedback.tsx'
 import { useNavigate, useLocation } from 'react-router-dom';
-import Headbar from '@components/Headbar/Headbar';
-
-import { RiAddLine, RiBriefcaseLine, RiDeleteBin2Line, RiEdit2Line, RiEyeLine, RiEyeOffLine, RiGraduationCapLine, RiSave2Line, RiSave3Line } from '@remixicon/react'
-import { useEffect, useState, useMemo } from 'react';
+import { RiAddLine, RiDeleteBin2Line, RiEdit2Line, RiEyeLine, RiEyeOffLine, RiSave3Line } from '@remixicon/react'
+import { useEffect, useState } from 'react';
 import api from '@src/services/apiService';
 
+type Section = {
+  id: number;
+  name: string;
+  order: number;
+  is_active: boolean;
+};
+
 function Sections() {
-    const navigate = useNavigate();
-    const location = useLocation();
-    const [sections, setSections] = useState([]);
-    const [isListView, setIsListView] = useState(true);
-    const [isCreateForm, setIsCreateForm] = useState(false);
-    const [sectionName, setSectionName] = useState('');
-    const [order, setOrder] = useState<number | ''>('');
-    const [isActive, setIsActive] = useState<'1' | '0'>('1');
-    const [isSaving, setIsSaving] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
-    useEffect(() => {
-        if (isCreateForm && !isListView) {
-            sessionStorage.setItem('insideCreationForm', 'true');
-        } else {
-            sessionStorage.removeItem('insideCreationForm');
-        }
-    }, [isCreateForm, isListView]);
+  const [sections, setSections] = useState<Section[]>([]);
+  const [isListView, setIsListView] = useState(true);
+  const [isCreateForm, setIsCreateForm] = useState(false);
+  const [isEditForm, setIsEditForm] = useState(false);
 
-    useEffect(() => {
-    if (location.state?.reset) {
-        setIsCreateForm(false);
-        setIsListView(true);
+  // ✅ nouvel état pour l'ID en édition
+  const [sectionId, setSectionId] = useState<number | null>(null);
+
+  const [sectionName, setSectionName] = useState('');
+  const [order, setOrder] = useState<number | ''>('');
+  const [isActive, setIsActive] = useState<'1' | '0'>('1');
+  const [isSaving, setIsSaving] = useState(false);
+
+  useEffect(() => {
+    if (isCreateForm && !isListView) {
+      sessionStorage.setItem('insideCreationForm', 'true');
+    } else {
+      sessionStorage.removeItem('insideCreationForm');
     }
-    }, [location.state]);
+  }, [isCreateForm, isListView]);
 
-    useEffect(() => {
+  useEffect(() => {
+    if (location.state?.reset) {
+      setIsCreateForm(false);
+      setIsListView(true);
+    }
+  }, [location.state]);
+
+  useEffect(() => {
+    fetchSections();
+  }, []);
+
+  const fetchSections = async () => {
+    try {
+      const data = await api.get<Section[]>('/sections');
+      data.sort((a, b) => a.order - b.order);
+      setSections(data);
+    } catch (error) {
+      console.error('Erreur lors du chargement des sections :', error);
+    }
+  };
+
+  const showListView = () => {
+    fetchSections();
+    setIsListView(true);
+    setIsEditForm(false);
+    setIsCreateForm(false);
+    setSectionId(null); // ✅ reset
+  };
+
+  const showCreateForm = () => {
+    setIsCreateForm(true);
+    setIsListView(false);
+    setIsEditForm(false);
+    setSectionId(null); // ✅ reset
+    setSectionName('');
+    setOrder('');
+    setIsActive('1');
+  };
+
+  const showEditForm = (section: Section) => {
+    setIsEditForm(true);
+    setIsListView(false);
+    setIsCreateForm(false);
+    setSectionId(section.id); // ✅ on mémorise l'ID
+    setSectionName(section.name);
+    setOrder(section.order);
+    setIsActive(section.is_active ? '1' : '0');
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      setIsSaving(true);
+
+      const payload = {
+        name: sectionName,
+        order: Number(order),
+        is_active: isActive === '1',
+      };
+
+      if (isEditForm) {
+        if (sectionId == null) {
+          throw new Error('Aucune section sélectionnée pour la modification');
+        }
+        await api.put(`/sections/${sectionId}`, payload); // ✅ sectionId existe
+      } else {
+        await api.post('/sections', payload);
+      }
+
+      showListView();
+    } catch (err) {
+      console.error('Erreur lors de la sauvegarde :', err);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleDelete = async (id: number) => {
+    if (confirm('Êtes-vous sûr de vouloir supprimer cette section ?')) {
+      try {
+        await api.delete(`/sections/${id}`);
         fetchSections();
-    }, []);
+      } catch (error) {
+        console.error('Erreur lors de la suppression de la section :', error);
+      }
+    }
+  };
 
-    const fetchSections = async () => {
-        try {
-            const data = await api.get('/sections');
-
-            data.sort((a, b) => a.order - b.order);
-            setSections(data);
-        } catch (error) {
-            console.error('Erreur lors du chargement des sections :', error);
-        }
-    };
-
-    const showListView = () => {
-        setIsListView(true);
-        setIsCreateForm(false);
-    };
-
-    const showCreateForm = () => {
-        setIsCreateForm(true);
-        setIsListView(false);
-        setSectionName('');
-        setOrder('');
-        setIsActive('1');
-    };
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        try {
-            setIsSaving(true);
-            // TODO: appel API pour créer la section
-            // await api.post('/sections', { name: sectionName, order: Number(order), is_active: isActive === '1' })
-
-            showListView(); // retour à la liste
-        } finally {
-            setIsSaving(false);
-        }
-    };
+  const handleVisibility = async (id: number) => {
+    try {
+      const current = sections.find(s => s.id === id)?.is_active ?? false;
+      await api.put(`/sections/${id}/visibility`, { is_active: !current });
+      fetchSections();
+    } catch (error) {
+      console.error('Erreur lors de la modification de la visibilité de la section :', error);
+    }
+  };
 
   return (
     <>
@@ -123,7 +182,7 @@ function Sections() {
                         className={`text-white rounded p-2 ${
                             section.is_active ? 'bg-blue-500 hover:bg-blue-600' : 'bg-gray-500 hover:bg-gray-600'
                         }`}
-                        onClick={() => navigate(`/sections/edit/${section.id}`)}
+                        onClick={() => handleVisibility(section.id)}
                         aria-label={section.is_active ? 'Voir' : 'Caché'}
                         title={section.is_active ? 'Voir' : 'Caché'}
                         >
@@ -136,7 +195,7 @@ function Sections() {
 
                         <button
                         className="text-white rounded p-2 bg-purple-500 hover:bg-purple-600"
-                        onClick={() => navigate(`/sections/edit/${section.id}`)}
+                        onClick={() => showEditForm(section)}
                         aria-label="Éditer"
                         title="Éditer"
                         >
@@ -145,7 +204,7 @@ function Sections() {
 
                         <button
                         className="text-white rounded p-2 bg-red-500 hover:bg-red-600"
-                        onClick={() => navigate(`/sections/edit/${section.id}`)}
+                        onClick={() => handleDelete(section.id)}
                         aria-label="Supprimer"
                         title="Supprimer"
                         >
@@ -162,9 +221,9 @@ function Sections() {
     </>
     )}
 
-    {isCreateForm && !isListView && (
+    {(isCreateForm || isEditForm) && !isListView && (
     <>
-        <h1 className="text-center font-bold text-2xl sm:text-3xl">Formulaire de création de section</h1>
+        <h1 className="text-center font-bold text-2xl sm:text-3xl">Formulaire de {isEditForm ? 'modification' : 'création'} de section</h1>
 
         <form
         onSubmit={handleSubmit}
@@ -217,6 +276,7 @@ function Sections() {
             className="inline-flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 disabled:opacity-60 rounded px-4 py-2 text-white font-semibold w-full sm:w-auto"
             disabled={isSaving}
             aria-busy={isSaving}
+            onClick={handleSubmit}
             >
             <RiSave3Line className="scale-90 inline-block" />
             {isSaving ? 'Enregistrement…' : 'Enregistrer'}

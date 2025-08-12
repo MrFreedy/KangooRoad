@@ -27,6 +27,8 @@ apiClient.interceptors.response.use(
 const api = {
   get: async <T>(endpoint: string) => (await apiClient.get<T>(endpoint)).data,
   post: async <T>(endpoint: string, body?: any) => (await apiClient.post<T>(endpoint, body)).data,
+  put: async <T>(endpoint: string, body?: any) => (await apiClient.put<T>(endpoint, body)).data,
+  delete: async <T>(endpoint: string, body?: any) => (await apiClient.delete<T>(endpoint, body)).data,
   login: async (username: string, password: string) =>
     (await apiClient.post('/users/login', { username, password })).data,
   me: async () => (await apiClient.get('/users/me')).data,
