@@ -56,7 +56,7 @@ router.put('/:id', async (req, res) => {
 
     try{
         const { name, order, is_active } = req.body;
-        await pool.query('UPDATE sections SET name = $1, order=$2, is_active=$3 WHERE id = $4', [name, order, is_active, id]);
+        await pool.query('UPDATE sections SET name = $1, "order"=$2, is_active=$3 WHERE id = $4', [name, order, is_active, id]);
 
         res.status(200).send('Section updated succesfully');
     } catch (error) {
