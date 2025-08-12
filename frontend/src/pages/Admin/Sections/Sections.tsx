@@ -29,12 +29,12 @@ function Sections() {
   const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
-    if (isCreateForm && !isListView) {
+    if (isCreateForm || isEditForm && !isListView) {
       sessionStorage.setItem('insideCreationForm', 'true');
     } else {
       sessionStorage.removeItem('insideCreationForm');
     }
-  }, [isCreateForm, isListView]);
+  }, [isCreateForm, isEditForm, isListView]);
 
   useEffect(() => {
     if (location.state?.reset) {
