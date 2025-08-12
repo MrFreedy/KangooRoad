@@ -26,4 +26,43 @@ router.post('/', async (req, res) => {
     }
 });
 
+router.delete('/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        await pool.query('DELETE FROM sections WHERE id = $1', [id]);
+        res.status(200).send('Section deleted');
+    } catch (error) {
+        console.error('Error deleting section:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+router.put('/:id/visibility', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const { is_active } = req.body
+        await pool.query('UPDATE sections SET is_active = $1 WHERE id=$2',[is_active, id]);
+
+        res.status(200).send('Section visibility updated');
+    } catch (error) {
+        console.error('Error updating visibility section:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+
+});
+
+router.put('/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try{
+        const { name, order, is_active } = req.body;
+        await pool.query('UPDATE sections SET name = $1, order=$2, is_active=$3 WHERE id = $4', [name, order, is_active, id]);
+
+        res.status(200).send('Section updated succesfully');
+    } catch (error) {
+        console.error('Error updating section:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
 module.exports = router;
