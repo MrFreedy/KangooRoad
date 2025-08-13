@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.post('/', async (req, res) => {
+router.post('/', requireRole('admin'), async (req, res) => {
     try {
         const { name, order, is_active } = req.body;
         await pool.query('INSERT INTO sections (name, "order", is_active) VALUES ($1, $2, $3)',[name, order, is_active]);
@@ -26,7 +26,7 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', requireRole('admin'), async (req, res) => {
     const { id } = req.params;
     try {
         await pool.query('DELETE FROM sections WHERE id = $1', [id]);
@@ -37,7 +37,7 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
-router.put('/:id/visibility', async (req, res) => {
+router.put('/:id/visibility', requireRole('admin'), async (req, res) => {
     const { id } = req.params;
     try {
         const { is_active } = req.body
@@ -51,7 +51,7 @@ router.put('/:id/visibility', async (req, res) => {
 
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', requireRole('admin'), async (req, res) => {
     const { id } = req.params;
 
     try{
