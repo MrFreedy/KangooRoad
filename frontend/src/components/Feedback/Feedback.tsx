@@ -164,50 +164,56 @@ const Feedback: React.FC<FeedbackProps> = ({
       {isOpen && (
         <div className="p-4 space-y-4 bg-white">
           {form_data
-            .filter((step) => step.stepVisibility === '1')
+            .filter((step) => {
+              if (window.location.pathname === '/overview') {
+                return step.stepVisibility === '1';
+              } else {
+                return step.stepVisibility === '0' || step.stepVisibility === '1';
+              }
+            })
             .map((step, stepIndex) => (
               <div key={stepIndex} className="border border-gray-200 rounded-md overflow-hidden">
-                <button
-                  className="w-full text-left p-3 bg-gray-50 hover:bg-gray-100 cursor-pointer"
-                  onClick={() => toggleStep(stepIndex)}
-                >
-                  <div className="flex justify-between">
-                    <span className="font-medium">{step.stepLabel}</span>
-                    <RiArrowDownSLine
-                      className={`text-2xl text-blue-500 transition-transform ${openSteps[stepIndex] ? 'rotate-180' : ''}`}
-                    />
-                    </div>
-                </button>
-                {openSteps[stepIndex] && (
-                  <div className="p-3 space-y-2 bg-white">
-                    <ul className="space-y-2">
-                      {step.questions.map((q, i) => (
-                        <li key={i} className="p-2 rounded text-justify">
-                          <strong className="block text-sm text-bold text-gray-700">{q.label}</strong>
+          <button
+            className="w-full text-left p-3 bg-gray-50 hover:bg-gray-100 cursor-pointer"
+            onClick={() => toggleStep(stepIndex)}
+          >
+            <div className="flex justify-between">
+              <span className="font-medium">{step.stepLabel}</span>
+              <RiArrowDownSLine
+                className={`text-2xl text-blue-500 transition-transform ${openSteps[stepIndex] ? 'rotate-180' : ''}`}
+              />
+            </div>
+          </button>
+          {openSteps[stepIndex] && (
+            <div className="p-3 space-y-2 bg-white">
+              <ul className="space-y-2">
+                {step.questions.map((q, i) => (
+            <li key={i} className="p-2 rounded text-justify">
+              <strong className="block text-sm text-bold text-gray-700">{q.label}</strong>
 
-                          {/* Valeur */}
-                          {isDynamic(q) ? (
-                            renderDynamic(q, renderRating)
-                          ) : q.type === 'rating' ? (
-                            <p className="text-sm text-gray-700">
-                              {renderRating(typeof q.value === 'number' ? q.value : parseInt(q.value as string, 10))}
-                            </p>
-                          ) : Array.isArray(q.value) ? (
-                            // fichiers ou listes simples
-                            <p className="text-sm text-gray-700">{q.value.join(', ')}</p>
-                          ) : (
-                            <p className="text-sm text-gray-700">{q.value}</p>
-                          )}
+              {/* Valeur */}
+              {isDynamic(q) ? (
+                renderDynamic(q, renderRating)
+              ) : q.type === 'rating' ? (
+                <p className="text-sm text-gray-700">
+                  {renderRating(typeof q.value === 'number' ? q.value : parseInt(q.value as string, 10))}
+                </p>
+              ) : Array.isArray(q.value) ? (
+                // fichiers ou listes simples
+                <p className="text-sm text-gray-700">{q.value.join(', ')}</p>
+              ) : (
+                <p className="text-sm text-gray-700">{q.value}</p>
+              )}
 
-                          {/* Détails optionnels */}
-                          {'details' in q && q.details && (
-                            <p className="text-sm text-gray-500">{q.details}</p>
-                          )}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
+              {/* Détails optionnels */}
+              {'details' in q && q.details && (
+                <p className="text-sm text-gray-500">{q.details}</p>
+              )}
+            </li>
+                ))}
+              </ul>
+            </div>
+          )}
               </div>
             ))}
         </div>
