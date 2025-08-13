@@ -13,8 +13,11 @@ function authenticateToken(req, res, next) {
     }
 
     jwt.verify(token, JWT_SECRET, (err, user) => {
-        if (err) return res.sendStatus(403);
-        req.user = user;
+        if (err) return res.status(403).json({ error: 'Invalid or expired token' });
+        req.user = {
+            ...user,
+            role: user.is_admin ? 'admin' : (user.role || 'user'),
+        };
         next();
     });
 }
