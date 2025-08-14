@@ -18,7 +18,7 @@ const Headbar: React.FC<HeadbarProps> = ({ currentStep, totalSteps}) => {
   const isOverviewPage = location.pathname === '/overview';
   const isSectionPage = location.pathname === '/sections';
   const showConnectionButton = location.pathname === '/';
-  const showBackButton = location.pathname === '/overview' || location.pathname === '/annuaire' || location.pathname === '/policy' || location.pathname === '/sections';
+  const showBackButton = location.pathname === '/overview' || location.pathname === '/annuaire' || location.pathname === '/policy' || location.pathname === '/sections' || location.pathname === '/feedbacks';
 
   const isLoggedIn = Boolean(localStorage.getItem('token'));
 

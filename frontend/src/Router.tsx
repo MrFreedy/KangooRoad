@@ -7,6 +7,7 @@ import Overview from './pages/Overview/Overview';
 import Annuaire from './pages/Annuaire/Annuaire';
 import Policy from './pages/Policy/Policy';
 import Contact from './pages/Contact/Contact';
+import Feedbacks from './pages/Admin/Feedbacks/Feedbacks';
 import Sections from './pages/Admin/Sections/Sections';
 import { ProgressProvider } from './context/ProgressContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
@@ -33,6 +34,7 @@ const AppRouter = () => (
               <Route path="/annuaire" element={<Annuaire />} />
               <Route path="/policy" element={<Policy/>} />
               <Route path="/sections" element={<Sections />} />
+              <Route path="/feedbacks" element={<Feedbacks />} />
             </Route>
             <Route path="/contact" element={<Contact/>}/>
           </Route>

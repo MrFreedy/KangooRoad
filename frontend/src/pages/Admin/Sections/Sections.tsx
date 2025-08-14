@@ -20,7 +20,6 @@ function Sections() {
   const [isCreateForm, setIsCreateForm] = useState(false);
   const [isEditForm, setIsEditForm] = useState(false);
 
-  // ✅ nouvel état pour l'ID en édition
   const [sectionId, setSectionId] = useState<number | null>(null);
 
   const [sectionName, setSectionName] = useState('');
@@ -79,7 +78,7 @@ function Sections() {
     setIsEditForm(true);
     setIsListView(false);
     setIsCreateForm(false);
-    setSectionId(section.id); // ✅ on mémorise l'ID
+    setSectionId(section.id);
     setSectionName(section.name);
     setOrder(section.order);
     setIsActive(section.is_active ? '1' : '0');
@@ -100,7 +99,7 @@ function Sections() {
         if (sectionId == null) {
           throw new Error('Aucune section sélectionnée pour la modification');
         }
-        await api.put(`/sections/${sectionId}`, payload); // ✅ sectionId existe
+        await api.put(`/sections/${sectionId}`, payload);
       } else {
         await api.post('/sections', payload);
       }
