@@ -8,7 +8,7 @@ services:
       dockerfile: Dockerfile
     restart: always
     ports:
-      - "5173:5173"
+      - "4173:4173"
     depends_on:
       - api
     networks:
@@ -30,7 +30,7 @@ services:
     image: postgres
     restart: always
     ports:
-      - "5433:5432"
+      - "4433:4432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     environment:
