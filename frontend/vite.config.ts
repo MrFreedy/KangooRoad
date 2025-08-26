@@ -15,5 +15,8 @@ export default defineConfig({
       '@src': '/src',
       '@assets': '/src/assets'
     }
+  },
+  server:{
+    port: 4173,
   }
 })
