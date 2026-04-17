@@ -29,7 +29,7 @@ services:
       - kangooroad-network
   db:
     container_name: kangooroad-db
-    image: postgres
+    image: postgres:17
     restart: always
     ports:
       - "4433:4432"
