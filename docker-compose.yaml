@@ -3,6 +3,7 @@ version: "3.8"
 services:
   web:
     container_name: kangooroad-web
+    image: 168.231.87.179:1112/kangooroad/kangooroad_web:latest
     build:
       context: ./frontend
       dockerfile: Dockerfile
@@ -15,6 +16,7 @@ services:
       - kangooroad-network
   api:
     container_name: kangooroad-api
+    image: 168.231.87.179:1112/kangooroad/kangooroad_api:latest
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -44,4 +46,4 @@ volumes:
 
 networks:
   kangooroad-network:
-    external: true
+    driver: bridge
