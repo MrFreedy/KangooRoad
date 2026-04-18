@@ -1,6 +1,7 @@
-# KangooRoad
+![logo light](https://raw.githubusercontent.com/MrFreedy/KangooRoad/master/frontend/src/assets/logo.svg#gh-light-mode-only)
+![logo dark](https://raw.githubusercontent.com/MrFreedy/KangooRoad/master/frontend/src/assets/logo-dark.svg#gh-dark-mode-only)
 
-Application web de collecte et de consultation de feedbacks d'étudiants (mobilité internationale), avec un espace utilisateur et un espace admin.
+Application web de collecte et de consultation de feedbacks d'étudiants (mobilité internationale), avec un espace utilisateur et un espace admin. Accessible [ici](http://168.231.87.179:4173/)
 
 ## À quoi sert le projet ?
 
