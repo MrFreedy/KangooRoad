@@ -149,7 +149,7 @@ INSERT INTO public.questions (id, section_id, type, content, options, "order", i
 INSERT INTO public.questions (id, section_id, type, content, options, "order", is_mandatory, is_details) VALUES (3, 1, 'email', 'Email', null, 3, false, false);
 INSERT INTO public.questions (id, section_id, type, content, options, "order", is_mandatory, is_details) VALUES (4, 1, 'checkbox', 'En cochant cette case, j''accepte d''être contacté(e) par des étudiants pour partager des informations et des retours d''expérience.', '[]', 4, false, false);
  
--- Feedbacks (données réelles)
+-- Feedbacks
 INSERT INTO public.feedbacks (id, form_data, is_visible, submission_date, school, year, city, country, user_type, is_contact, firstname, lastname, email) VALUES (6, '[{"questions": []}]', true, '2024-11-26', 'NDHU', 2024, 'Hualien', 'Taïwan', 'alternant', false, null, null, null);
 INSERT INTO public.feedbacks (id, form_data, is_visible, submission_date, school, year, city, country, user_type, is_contact, firstname, lastname, email) VALUES (1, '[{"questions": []}]', true, '2024-11-11', 'UQAC', 2024, 'Chicoutimi', 'Canada', 'alternant', true, 'Marie', 'Dupont', 'marie.dupont@gmail.com');
 INSERT INTO public.feedbacks (id, form_data, is_visible, submission_date, school, year, city, country, user_type, is_contact, firstname, lastname, email) VALUES (10, '[{"questions": []}]', true, '2024-11-28', 'UQO', 2023, 'Gatineau', 'Canada', 'alternant', false, null, null, null);
